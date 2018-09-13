@@ -14,11 +14,13 @@ Function names should be descriptive and use `snake_case`.  These don't need to 
 All functions must have a supporting document string defining what the function takes in as parameters, what it outputs, the type of the variable, and a general description of what it does / how it works if the logic is complex.  For example:
 
 ```python
-# This complex mathematical operation is yielded by the laws of addition.  Please reference Goldstein and Harowitz for more information, chapters 15-17.  The first numbers value is added to the value of the second number and the resulting mathematical expression is returned.
+\`\`\`This complex mathematical operation is yielded by the laws of addition.  Please reference Goldstein and Harowitz 
+for more information, chapters 15-17.  The first numbers value is added to the value of the second number and the resulting mathematical expression is returned.
 
-# @param  num1  int  the first number in the addition operation
-# @param  num2  int  the second number in the addition operation
-# @return       int  the result of the addition operation
+@param  num1  int  the first number in the addition operation
+@param  num2  int  the second number in the addition operation
+@return       int  the result of the addition operation
+\`\`\`
 def sum_two_numbers(num1, num2):
   return num1 + num2
 ```
