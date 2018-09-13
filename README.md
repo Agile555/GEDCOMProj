@@ -52,7 +52,7 @@ def _is_negative(num):
 Gives the absolute value of a number.
 
 @param    num   int   the number to take absolute value of
-@return   num   int   the absolute value of the number in question
+@return         int   the absolute value of the number in question
 """
 def absolute_value(num):
     if(_is_negative(num)):
