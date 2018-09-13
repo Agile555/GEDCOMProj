@@ -10,7 +10,7 @@ Please make sure that you `git fetch` and `git pull` before you start work on so
 ### Function Naming
 Function names should be descriptive and use `snake_case`.  These don't need to be Java length names, but a couple of words goes a long way.
 
-### Function Commenting
+### Function Documentation
 All functions must have a supporting document string defining what the function takes in as parameters, what it outputs, the type of the variable, and a general description of what it does / how it works if the logic is complex.  For example:
 
 ```python
@@ -18,16 +18,47 @@ All functions must have a supporting document string defining what the function 
 This complex mathematical operation is yielded by the laws of addition.  Please reference Goldstein and Harowitz 
 for more information, chapters 15-17.  The first numbers value is added to the value of the second number and the resulting mathematical expression is returned.
 
-@param  num1  int  the first number in the addition operation
-@param  num2  int  the second number in the addition operation
-@return       int  the result of the addition operation
+@param    num1    int   the first number in the addition operation
+@param    num2    int   the second number in the addition operation
+@return           int   the result of the addition operation
 """
 def sum_two_numbers(num1, num2):
-  return num1 + num2
+    return num1 + num2
 ```
 
 ### Modules
 Modules must be implemented in their own file and then imported into `index.py`.  Please provide unit tests inside of your module that you execute on your own before pushing to the repository.
+
+If starting a new module, please specify a docstring at the top specifying the user story that this module helps satisfy as well as the author(s).  Python has no built-in support for encapsulation in modules, however, all private methods of a module should be prefixed with an underscore.  For example:
+
+```python
+"""
+Module providing absolute value functions.
+@author:  Mark Freeman
+"""
+
+"""
+Determines if a number is negative or not.
+
+@param    num   int   the number in question
+@return         bool  boolean stating that the number is negative
+"""
+def _is_negative(num):
+    if(num < 0):
+        return True
+    return False
+
+"""
+Gives the absolute value of a number.
+
+@param    num   int   the number to take absolute value of
+@return   num   int   the absolute value of the number in question
+"""
+def absolute_value(num):
+    if(_is_negative(num)):
+        return num * -1
+    return num
+```
 
 ## Purpose of this Project
 
