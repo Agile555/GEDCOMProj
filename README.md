@@ -100,7 +100,7 @@ git checkout -b another_feature_name dev
 
 ### Pull Requests
 
-To merge a branch, you will need to open a pull request stating a general summary of the change.  This will very often just be what user story you are completing.  Pull requests to `dev` will require approval by at least 2 developers.  Pull requests to `master` will need approval from 4.
+To merge a branch, you will need to open a pull request stating a general summary of the change.  This will very often just be what user story you are completing.  Pull requests to `dev` will require approval by at least 2 developers.  Pull requests to `master` will need approval from 3.  You cannot approve our own pull request.
 
 ## Purpose of this Project
 
