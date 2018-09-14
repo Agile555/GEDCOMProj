@@ -60,6 +60,44 @@ def absolute_value(num):
     return num
 ```
 
+## Feature Promotion
+
+As you develop and complete user stories, please do not commit to `master`. That would be bad.  Instead, open up a new branch from `dev` each time you intend to create a new feature.  This helps to keep things encapsulated.
+
+Once you have tested your new user story locally and assured proper functionality, you may then merge your branch up to `dev`.  Then, just as before, reopen a new branch if you want to start a new feature.  Every so often, we will then take all of the completed user stories and merge them up to `master`.
+
+Never commit directly to `dev` or to `master`.  This increases the odds of encountering a merge conflict.
+
+### Example
+
+```bash
+# I'm now going to start a feature, can also branch via github.com
+git checkout -b name_of_my_feature dev
+
+# ... going along doing some work
+git add super_cool_python_file.py
+git commit -m "Start user story 44"
+
+# ... and all done
+git add super_cool_python_file.py
+git commit -m "Finish user story 44"
+
+# First merge the branch into dev
+git checkout dev
+git merge name_of_my_feature
+
+# Delete the old branch
+git branch -d name_of_my_feature
+
+# ... 
+
+# Now I want to start a new user story
+git checkout -b another_feature_name dev
+
+# ... and so on
+
+```
+
 ## Purpose of this Project
 
 This project is being created in response to SSW555, a course on agile methodologies at Stevens taught by Professor Rowland.  Four students are teaming up to take on this project using tactics such as pair programming, scrum, and continuous integration.
