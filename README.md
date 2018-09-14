@@ -98,6 +98,10 @@ git checkout -b another_feature_name dev
 
 ```
 
+### Pull Requests
+
+To merge a branch, you will need to open a pull request stating a general summary of the change.  This will very often just be what user story you are completing.  Pull requests to `dev` will require approval by at least 2 developers.  Pull requests to `master` will need approval from 4.
+
 ## Purpose of this Project
 
 This project is being created in response to SSW555, a course on agile methodologies at Stevens taught by Professor Rowland.  Four students are teaming up to take on this project using tactics such as pair programming, scrum, and continuous integration.
