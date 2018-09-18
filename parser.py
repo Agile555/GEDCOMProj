@@ -1,184 +1,164 @@
 #Mark Freeman, SSW555
 
-from prettytable import PrettyTable
+from prettytable import from_db_cursor
+import datetime
+import sqlite3
 
-d = {
+conn = sqlite3.connect('megatron.db')
+c = conn.cursor()
+
+d = { #not all tags have parallels, but all headers come from one or more tags
     'INDI': {
         'level': '0',
         'parents': [],
-        'takesArgs': True,
         'backwards': True,
-        'parallel': {
-            'name': 'ID',
-            'index': 0
-        },
-        'number_of_attributes': 9,
-        'table': PrettyTable()
+        'parallel': 'ID',
+        'number_of_attributes': 9
     },
     'FAM': {
         'level': '0',
         'parents': [],
-        'takesArgs': True,
         'backwards': True,
-        'parallel': {
-            'name': 'ID',
-            'index': 0
-        },
-        'number_of_attributes': 8,
-        'table': PrettyTable()
+        'parallel': 'ID',
+        'number_of_attributes': 8
     },
     'HEAD': {
         'level': '0',
         'parents': [],
-        'takesArgs': False,
         'backwards': False
     },
     'TRLR': {
         'level': '0',
         'parents': [],
-        'takesArgs': False,
         'backwards': False
     },
     'NOTE': {
         'level': '0',
         'parents': [],
-        'takesArgs': True,
         'backwards': False
     },
     'NAME': {
         ''
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Name',
-            'index': 1
-        }
+        'parallel': 'Name'
     },
     'SEX': {
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Gender',
-            'index': 2
-        }
+        'parallel': 'Gender'
     },
     'BIRT': {
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': False,
         'backwards': False,
-        'parallel': {
-            'name': 'Birthday',
-            'index': 3
-        }
+        'parallel': 'Birthday'
     },
     'DEAT': {
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': False,
         'backwards': False,
-        'parallel': {
-            'name': 'Death',
-            'index': 6
-        }
+        'parallel': 'Death'
     },
     'FAMC': {
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Child',
-            'index': 7
-        }
+        'parallel': 'Child'
     },
     'FAMS': {
         'level': '1',
         'parents': ['INDI'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Spouse',
-            'index': 8
-        }
+        'parallel': 'Spouse'
     },
     'MARR': {
         'level': '1',
         'parents': ['FAM'],
-        'takesArgs': False,
         'backwards': False,
-        'parallel': {
-            'name': 'Married',
-            'index': 1
-        }
+        'parallel': 'Married'
     },
     'HUSB': {
         'level': '1',
         'parents': ['FAM'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Husband ID',
-            'index': 3
-        }
+        'parallel': 'Husband ID'
     },
     'WIFE': {
         'level': '1',
         'parents': ['FAM'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Wife ID',
-            'index': 5
-        }
+        'parallel': 'Wife ID'
     },
     'DIV': {
         'level': '1',
         'parents': ['FAM'],
-        'takesArgs': False,
         'backwards': False,
-        'parallel': {
-            'name': 'Divorced',
-            'index': 2
-        }
+        'parallel': 'Divorced'
     },
     'CHIL': {
         'level': '1',
         'parents': ['FAM'],
-        'takesArgs': True,
         'backwards': False,
-        'parallel': {
-            'name': 'Children',
-            'index': 7
-        }
+        'parallel': 'Children'
     },
     'DATE': {
         'level': '2',
         'parents': ['BIRT', 'DEAT', 'DIV', 'MARR'],
-        'takesArgs': True,
         'backwards': False
     }
 }
 
-#could use enum as well, but let's just dictionary these for now
-#TODO: merge this into the main dictionary, pretty sure it can be done
-#2 things with it:
-#1) How do I get the field naems generated?
-#2) How do I append into the cursor using it?
-           
-indices = {
-    'INDI': ['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'],
-    'FAM': ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
+#inflate an ordered dictionary to hold the tags and their position in the table
+indiTableTags = ['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse']
+famTableTags = ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
+i = {
+    'INDI': dict(zip(indiTableTags, range(len(indiTableTags)))),
+    'FAM': dict(zip(famTableTags, range(len(famTableTags))))
 }
 
 stack = []
 cursor = []
-d['INDI']['table'].field_names = indices['INDI']
-d['FAM']['table'].field_names = indices['FAM']
+
+def adjustEntries(type): #after filling in direct related tags, fill secondary related
+    global cursor #i am a truly lost man
+    if(type == 'INDI'):
+        if(exists(cursor[i[type]['Birthday']])): #we were given a birth date, must fill in age
+            if(exists(cursor[i[type]['Death']])): #age will diff between age and death
+                cursor[i[type]['Age']] = (cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365 #TODO: technically not right with leap years
+            else: #didn't die, age is diff between birth and now
+                cursor[i[type]['Age']] = datetime.date.today() - cursor[i[type]['Birthday']]
+        if(exists(cursor[i[type]['Death']])):
+            cursor[i[type]['Alive']] = 'N'
+        else:
+            cursor[i[type]['Alive']] = 'Y'
+    #TODO add query support
+    elif(type == 'FAM'):
+        addSpouseNames(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']])
+
+def exists(str):
+    return (str != 'NA')
+
+#TODO: name-ify
+def addSpouseNames(husb, wife):
+    global cursor
+    val = searchDB('INDI', 'Name', 'ID', husb).fetchone()
+    if(val):
+        cursor[4] = val[0] #it's a cursor, need to subscript
+    val = searchDB('INDI', 'Name', 'ID', wife).fetchone()
+    if(val):
+        cursor[6] = val[0]
+
+def insertIntoDB(table, lst):
+    if(table == 'INDI'):
+        return c.execute('INSERT INTO INDI VALUES (?,?,?,?,?,?,?,?,?)', lst)
+    if(table == 'FAM'):
+        return c.execute('INSERT INTO FAM VALUES (?,?,?,?,?,?,?,?)', lst)
+    
+def searchDB(table, column, name, value):
+    return c.execute("SELECT {} FROM {} WHERE {}='{}'".format(column, table, name, value)) #for some reason SQLite wants them in quotes
 
 def isBackWardTag(str):
     if(d.get(str) and d.get(str).get('backwards')):
@@ -207,7 +187,6 @@ def createMessage(tagName, level, letter, args):
     return '<--' + level + '|' + tagName + '|' + letter + '|' + " ".join(args)
 
 #TODO: name-ify these cursor calls to make the code more idiomatic
-#TODO: see about removing many of these create message calls, maybe try except and place no in the except?
 def process(line): #goal is to make sure that it is at its own valid level AND preceding a parent
     arr = line.split(" ")
     level, tagName, args = arr[0], None, [] #we know the level always
@@ -225,34 +204,34 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
         else:
             tagName, args = arr[1], arr[2:]
 
-    #phase 2: add rows based on what was assigned
+    #phase 2: add rows based on what was assigned, soon won't need to print lines
     if(isValidLevel(tagName, level)): #we have the tagName and level, assure that they are compatible
-        if(level == '0'): #SOME level 0 tags indicate a new entry, not all
+        if(level == '0'):
             if(isBackWardTag(tagName)): #only backward tags constitute a new entry
                 if(cursor): #if one is already populated, go and insert it
-                    d[stack[0]]['table'].add_row(cursor) #must be before repairing the stack
+                    adjustEntries(stack[0])
+                    insertIntoDB(stack[0], cursor)
                 repairStack(tagName)
-                cursor = ["NA"] * d.get(tagName)['number_of_attributes'] #fancy
-                cursor[d[stack[0]]['parallel']['index']] = " ".join(args) #insert id
+                cursor = ["NA"] * d[tagName]['number_of_attributes'] #fancy
+                
+                cursor[i[tagName][d[tagName]['parallel']]] = " ".join(args) #insert id
                 #now we have a cursor with the id filled that we can use
             return createMessage(tagName, level, 'Y', args)
-        #TODO: think about consolidating these two blocks as they both make similar calls
         elif(level == '1'):
             if(isProperChild(tagName)):
                 repairStack(tagName)
-                cursor[d[tagName]['parallel']['index']] = " ".join(args)
+                cursor[i[stack[0]][d[tagName]['parallel']]] = " ".join(args)
                 return createMessage(tagName, level, 'Y', args)
             else:
                 return createMessage(tagName, level, 'N', args)
-        else: #level is 2
+        else: #level is 2, so far only date can have this so I'll throw a strip time right in and not check
             if(isProperChild(tagName)):
                 repairStack(tagName)
                 parent = stack[-1] #the last element on the stack is the immediate parent we need to modify
-                cursor[d[parent]['parallel']['index']] = " ".join(args)
+                cursor[i[stack[0]][d[parent]['parallel']]] = datetime.datetime.strptime(" ".join(args), '%d %b %Y').date()
                 return createMessage(tagName, level, 'Y', args)
             else:
                 return createMessage(tagName, level, 'N', args)
-
     else:
         return createMessage(tagName, level, 'N', args) #it wasn't a tag or it wasn't a valid level for that tag
 
@@ -266,10 +245,13 @@ def main():
             print('-->' + line)
             print(process(line))
 
-        d[stack[0]]['table'].add_row(cursor) #clear out the residual item on the stack
+        adjustEntries(stack[0])
+        insertIntoDB(stack[0], cursor)
 
-        print(d['INDI']['table'])
-        print(d['FAM']['table'])
+        #go grab the sql tables
+        print(from_db_cursor(c.execute('SELECT * FROM INDI')))
+        print(from_db_cursor(c.execute('SELECT * FROM FAM')))
+        conn.commit() #save db every time it's run
 
 if __name__ == '__main__':
     main()
