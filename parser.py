@@ -8,7 +8,10 @@ d = {
         'parents': [],
         'takesArgs': True,
         'backwards': True,
-        'parallel': 'ID',
+        'parallel': {
+            'name': 'ID',
+            'index': 0
+        },
         'number_of_attributes': 9,
         'table': PrettyTable()
     },
@@ -17,7 +20,10 @@ d = {
         'parents': [],
         'takesArgs': True,
         'backwards': True,
-        'parallel': 'ID',
+        'parallel': {
+            'name': 'ID',
+            'index': 0
+        },
         'number_of_attributes': 8,
         'table': PrettyTable()
     },
@@ -45,77 +51,110 @@ d = {
         'parents': ['INDI'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Name'
+        'parallel': {
+            'name': 'Name',
+            'index': 1
+        }
     },
     'SEX': {
         'level': '1',
         'parents': ['INDI'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Gender'
+        'parallel': {
+            'name': 'Gender',
+            'index': 2
+        }
     },
     'BIRT': {
         'level': '1',
         'parents': ['INDI'],
         'takesArgs': False,
         'backwards': False,
-        'parallel': 'Birthday'
+        'parallel': {
+            'name': 'Birthday',
+            'index': 3
+        }
     },
     'DEAT': {
         'level': '1',
         'parents': ['INDI'],
         'takesArgs': False,
         'backwards': False,
-        'parallel': 'Death'
+        'parallel': {
+            'name': 'Death',
+            'index': 6
+        }
     },
     'FAMC': {
         'level': '1',
         'parents': ['INDI'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Child'
+        'parallel': {
+            'name': 'Child',
+            'index': 7
+        }
     },
     'FAMS': {
         'level': '1',
         'parents': ['INDI'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Spouse'
+        'parallel': {
+            'name': 'Spouse',
+            'index': 8
+        }
     },
     'MARR': {
         'level': '1',
         'parents': ['FAM'],
         'takesArgs': False,
         'backwards': False,
-        'parallel': 'Married'
+        'parallel': {
+            'name': 'Married',
+            'index': 1
+        }
     },
     'HUSB': {
         'level': '1',
         'parents': ['FAM'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Husband ID'
+        'parallel': {
+            'name': 'Husband ID',
+            'index': 3
+        }
     },
     'WIFE': {
         'level': '1',
         'parents': ['FAM'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Wife ID'
+        'parallel': {
+            'name': 'Wife ID',
+            'index': 5
+        }
     },
     'DIV': {
         'level': '1',
         'parents': ['FAM'],
         'takesArgs': False,
         'backwards': False,
-        'parallel': 'Divorced'
+        'parallel': {
+            'name': 'Divorced',
+            'index': 2
+        }
     },
     'CHIL': {
         'level': '1',
         'parents': ['FAM'],
         'takesArgs': True,
         'backwards': False,
-        'parallel': 'Children'
+        'parallel': {
+            'name': 'Children',
+            'index': 7
+        }
     },
     'DATE': {
         'level': '2',
@@ -126,34 +165,20 @@ d = {
 }
 
 #could use enum as well, but let's just dictionary these for now
+#TODO: merge this into the main dictionary, pretty sure it can be done
+#2 things with it:
+#1) How do I get the field naems generated?
+#2) How do I append into the cursor using it?
+           
 indices = {
-    'individuals': {
-        'ID': 0,
-        'Name': 1,
-        'Gender': 2,
-        'Birthday': 3,
-        'Age': 4,
-        'Alive': 5,
-        'Death': 6,
-        'Child': 7,
-        'Spouse': 8
-    },
-    'families': {
-        'ID': 0,
-        'Married': 1,
-        'Divorced': 2,
-        'Husband ID': 3,
-        'Husband Name': 4,
-        'Wife ID': 5,
-        'Wife Name': 6,
-        'Children': 7
-    }
+    'INDI': ['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse'],
+    'FAM': ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
 }
 
 stack = []
 cursor = []
-d['INDI']['table'].field_names = indices['individuals'].keys()
-d['FAM']['table'].field_names = indices['individuals'].keys()
+d['INDI']['table'].field_names = indices['INDI']
+d['FAM']['table'].field_names = indices['FAM']
 
 def isBackWardTag(str):
     if(d.get(str) and d.get(str).get('backwards')):
@@ -181,6 +206,8 @@ def repairStack(tagName):
 def createMessage(tagName, level, letter, args):
     return '<--' + level + '|' + tagName + '|' + letter + '|' + " ".join(args)
 
+#TODO: name-ify these cursor calls to make the code more idiomatic
+#TODO: see about removing many of these create message calls, maybe try except and place no in the except?
 def process(line): #goal is to make sure that it is at its own valid level AND preceding a parent
     arr = line.split(" ")
     level, tagName, args = arr[0], None, [] #we know the level always
@@ -202,19 +229,30 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
     if(isValidLevel(tagName, level)): #we have the tagName and level, assure that they are compatible
         if(level == '0'): #SOME level 0 tags indicate a new entry, not all
             if(isBackWardTag(tagName)): #only backward tags constitute a new entry
-                repairStack(tagName)
                 if(cursor): #if one is already populated, go and insert it
-                    d[tagName]['table'].add_row(cursor)
+                    d[stack[0]]['table'].add_row(cursor) #must be before repairing the stack
+                repairStack(tagName)
                 cursor = ["NA"] * d.get(tagName)['number_of_attributes'] #fancy
-                #now we have a cursor that we should use
+                cursor[d[stack[0]]['parallel']['index']] = " ".join(args) #insert id
+                #now we have a cursor with the id filled that we can use
             return createMessage(tagName, level, 'Y', args)
-        else:
+        #TODO: think about consolidating these two blocks as they both make similar calls
+        elif(level == '1'):
             if(isProperChild(tagName)):
                 repairStack(tagName)
-                #TODO: append to the cursor we already have
+                cursor[d[tagName]['parallel']['index']] = " ".join(args)
                 return createMessage(tagName, level, 'Y', args)
             else:
                 return createMessage(tagName, level, 'N', args)
+        else: #level is 2
+            if(isProperChild(tagName)):
+                repairStack(tagName)
+                parent = stack[-1] #the last element on the stack is the immediate parent we need to modify
+                cursor[d[parent]['parallel']['index']] = " ".join(args)
+                return createMessage(tagName, level, 'Y', args)
+            else:
+                return createMessage(tagName, level, 'N', args)
+
     else:
         return createMessage(tagName, level, 'N', args) #it wasn't a tag or it wasn't a valid level for that tag
 
@@ -227,6 +265,11 @@ def main():
             line = line.strip('\n') #take off the newline
             print('-->' + line)
             print(process(line))
+
+        d[stack[0]]['table'].add_row(cursor) #clear out the residual item on the stack
+
+        print(d['INDI']['table'])
+        print(d['FAM']['table'])
 
 if __name__ == '__main__':
     main()
