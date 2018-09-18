@@ -2,7 +2,6 @@
 
 from prettytable import PrettyTable
 
-#define globally our accepted tags
 d = {
     'INDI': {
         'level': '0',
@@ -110,14 +109,6 @@ d = {
 
 stack = []
 
-def empty(lst):
-    while(lst != []):
-        lst.pop()
-
-def emptyToOne(lst):
-    while(len(lst) < 1):
-        lst.pop()
-
 def isBackWardTag(str):
     if(d.get(str) and d.get(str).get('backwards')):
         return True
@@ -128,66 +119,58 @@ def isValidLevel(tagName, level):
         return True
     return False
 
-#search the stack for the parent to deem if it can go on
 def isProperChild(tagName):
-    for tag in stack:
+    for tag in stack: #search the stack for the parent to deem if it can go on
         if(tag in d.get(tagName).get('parents')):
             return True
     return False
 
-#fix the stack after insertion, this only really occurs after a 1 or 2 insertion, as there is no level 3
-#so state of level two does not need to be tracked
 def repairStack(tagName):
-    if(d.get(tagName).get('level') == '0'):
-        empty(stack)
-        stack.append(tagName)
-    elif(d.get(tagName).get('level') == '1'):
-        emptyToOne(stack) #would have had to pass a parent check, so stack cannot be 
-        stack.append(tagName)
+    global stack #forgive me
+    if(d.get(tagName).get('level') == '0'): #if it's level 0, empty the stack and replace bottom with new tag
+        stack = [tagName]
+    elif(d.get(tagName).get('level') == '1'): #if it's level 1, replace second to last element and remove all others
+        stack = [stack[0], tagName]
 
-def printMessage(tagName, level, args, letter):
-    print('<--' + level + '|' + tagName + '|' + letter + '|' + " ".join(args))
+def createMessage(tagName, level, letter, args):
+    return '<--' + level + '|' + tagName + '|' + letter + '|' + " ".join(args)
 
 #goal is to make sure that it is at its own valid level AND preceding a parent
 def main():
     file_name = input('Please enter the name of the file you wish to validate: ')
     with open(file_name, 'r') as f:
+
         for line in f:
             line = line.strip('\n') #take off the newline
             print('-->' + line)
             arr = line.split(" ")
 
-            #we assume all lines, even invalid ones are forward tags until proven otherwise
-            tagName = arr[1]
-            level = arr[0]
-            args = arr[2:]
+            level, tagName, args = arr[0], None, [] #we know the level always
 
-            #there's a better way to do this, but block anyone sneaking in a backward tag in the first slot
-            if(isBackWardTag(arr[1])):
-                printMessage(tagName, level, args, 'N')
-                continue
+            print(stack)
 
-            if(len(arr) > 2):
-                if(isBackWardTag(arr[2])): #if we were wrong, overwrite it
-                    tagName = arr[2]
-                    level = arr[0]
-                    args = [arr[1]] #keep array so we can join later
+            #phase 1: assign variables
+            if(len(arr) == 2):
+                tagName = arr[1]
+            elif(len(arr) > 2): #we know we have three, now check if it's backwards
+                if(isBackWardTag(arr[2])):
+                    tagName, args = arr[2], [arr[1]]
+                else:
+                    tagName, args = arr[1], arr[2:]
 
-            #now we have the tagName and level, assure that they are compatible
-            if(isValidLevel(tagName, level)):
-                #if we're going to 0, reset the stack with only that tag
-                if(level == '0'):
+            #phase 2: print based on what got assigned
+            if(isValidLevel(tagName, level)): #we have the tagName and level, assure that they are compatible
+                if(level == '0'): #level 0 tags don't have parents to check
                     repairStack(tagName)
-                    printMessage(tagName, level, args, 'Y')
+                    print(createMessage(tagName, level, 'Y', args))
                 else:
                     if(isProperChild(tagName)):
                         repairStack(tagName)
-                        printMessage(tagName, level, args, 'Y')
+                        print(createMessage(tagName, level, 'Y', args))
                     else:
-                        printMessage(tagName, level, args, 'N')
+                        print(createMessage(tagName, level, 'N', args))
             else:
-                #it wasn't a tag or it wasn't a valid level for that tag
-                printMessage(tagName, level, args, 'N')
+                print(createMessage(tagName, level, 'N', args)) #it wasn't a tag or it wasn't a valid level for that tag
 
 if __name__ == '__main__':
-    main();
+    main()
