@@ -1,0 +1,58 @@
+0 NOTE the lines until the next note are all correct
+0 HEAD
+0 jc INDI
+1 NAME Jimmy /Connors/
+1 SEX M
+1 BIRT
+2 DATE 1 JAN 1950
+1 DEAT
+2 DATE 31 DEC 2099
+1 FAMC f1
+1 FAMS f2
+0 f2 FAM
+1 HUSB jc
+1 WIFE ce
+1 CHIL aa
+1 MARR 
+2 DATE 1 JUN 1960
+1 DIV
+2 DATE 1 JUN 1961
+0 TRLR
+0 NOTE Everything past this line is invalid
+0 INDI id
+0 FAM id
+0 NAME invalid
+0 SEX invalid
+0 BIRT invalid
+0 DEAT invalid
+0 FAMC invalid
+0 FAMS invalid
+0 MARR invalid
+0 HUSB invalid
+0 WIFE invalid
+0 CHIL invalid
+0 DIV invalid
+0 DATE invalid
+1 INDI invalid
+1 FAM invalid
+1 HEAD 
+1 TRLR
+1 DATE
+1 NOTE bad note
+1 DATE 1 JUN 2017
+2 INDI id
+2 FAM id
+2 NAME invalid
+2 SEX invalid
+2 BIRT invalid
+2 DEAT invalid
+2 FAMC invalid
+2 FAMS invalid
+2 MARR invalid
+2 HUSB invalid
+2 WIFE invalid
+2 CHIL invalid
+2 DIV invalid
+1 INVALID invalid
+3 INVALID invalid
+4 NOTE invalid
