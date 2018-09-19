@@ -264,8 +264,8 @@ def main():
         insertIntoDB(stack[0], cursor)
 
         #go grab the sql tables
-        print(from_db_cursor(c.execute('SELECT * FROM INDI')))
-        print(from_db_cursor(c.execute('SELECT * FROM FAM')))
+        print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
+        print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
         conn.commit() #save db every time it's run
 
 if __name__ == '__main__':
