@@ -111,7 +111,7 @@ d = { #not all tags have parallels, but all headers come from one or more tags
     }
 }
 
-#inflate an ordered dictionary to hold the tags and their position in the table
+#inflate a dictionary to hold the tags and their position in the table
 indiTableTags = ['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse']
 famTableTags = ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
 i = {
@@ -129,7 +129,7 @@ def adjustEntries(type): #after filling in direct related tags, fill secondary r
             if(exists(cursor[i[type]['Death']])): #age will diff between age and death
                 cursor[i[type]['Age']] = (cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365 #TODO: technically not right with leap years
             else: #didn't die, age is diff between birth and now
-                cursor[i[type]['Age']] = datetime.date.today() - cursor[i[type]['Birthday']]
+                cursor[i[type]['Age']] = (datetime.date.today() - cursor[i[type]['Birthday']]).days // 365
         if(exists(cursor[i[type]['Death']])):
             cursor[i[type]['Alive']] = 'N'
         else:
@@ -137,6 +137,13 @@ def adjustEntries(type): #after filling in direct related tags, fill secondary r
     #TODO add query support
     elif(type == 'FAM'):
         addSpouseNames(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']])
+
+def append(index, str):
+    global cursor
+    if(exists(cursor[index])):
+        cursor[index] = [cursor[index], str]
+    else:
+        cursor[index] = str
 
 def exists(str):
     return (str != 'NA')
@@ -210,6 +217,7 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
             if(isBackWardTag(tagName)): #only backward tags constitute a new entry
                 if(cursor): #if one is already populated, go and insert it
                     adjustEntries(stack[0])
+                    print(cursor)
                     insertIntoDB(stack[0], cursor)
                 repairStack(tagName)
                 cursor = ["NA"] * d[tagName]['number_of_attributes'] #fancy
@@ -237,7 +245,7 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
 
 def main():
     #file_name = input('Please enter the name of the file you wish to validate: ')
-    file_name = 'tests/proj02test.ged'
+    file_name = 'tests/family.ged'
     with open(file_name, 'r') as f:
 
         for line in f:
