@@ -1,2 +1,4 @@
 modules/__pycache__
 env/
+.vscode
+megatron.db
