@@ -200,9 +200,6 @@ def isValidLevel(tagName, level):
 
 #################### Main Methods ######################
 
-def createMessage(tagName, level, letter, args):
-    return '<--' + level + '|' + tagName + '|' + letter + '|' + " ".join(args)
-
 def process(line): #goal is to make sure that it is at its own valid level AND preceding a parent
     arr = line.split(" ")
     level, tagName, args = arr[0], None, [] #we know the level always
@@ -213,7 +210,6 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
     elif(len(arr) > 2): #we know we have three, now check if it's backwards
         if(isBackWardTag(arr[1])): #if there's a backward tag in the wrong spot, don't bother
             tagName, args = arr[1], arr[2:]
-            return createMessage(tagName, level, 'N', args)
         if(isBackWardTag(arr[2])):
             tagName, args = arr[2], [arr[1]]
         else:
@@ -230,25 +226,16 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
                 emptyCursor(d[tagName]['number_of_attributes']) #empty
                 append(i[tagName][d[tagName]['parallel']], " ".join(args)) #insert id
                 #now we have a cursor with the id filled that we can use
-            return createMessage(tagName, level, 'Y', args)
         elif(level == '1'):
             if(isProperChild(tagName)):
                 repairStack(tagName)
                 if(args): #we don't want to overwrite the NA if we have no args to put there anyways
                     append(i[stack[0]][d[tagName]['parallel']], " ".join(args))
-                return createMessage(tagName, level, 'Y', args)
-            else:
-                return createMessage(tagName, level, 'N', args)
         else: #level is 2, so far only date can have this so I'll throw a strip time right in and not check
             if(isProperChild(tagName)):
                 repairStack(tagName)
                 parent = stack[-1] #the last element on the stack is the immediate parent we need to modify with date
                 append(i[stack[0]][d[parent]['parallel']], datetime.datetime.strptime(" ".join(args), '%d %b %Y').date())
-                return createMessage(tagName, level, 'Y', args)
-            else:
-                return createMessage(tagName, level, 'N', args)
-    else:
-        return createMessage(tagName, level, 'N', args) #it wasn't a tag or it wasn't a valid level for that tag
 
 def main():
     file_name = input('Please enter the name of the file you wish to validate: ')
@@ -257,8 +244,7 @@ def main():
 
         for line in f:
             line = line.strip('\n') #take off the newline
-            print('-->' + line)
-            print(process(line))
+            process(line)
 
         adjustEntries(stack[0])
         insertIntoDB(stack[0], cursor)
