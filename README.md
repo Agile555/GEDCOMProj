@@ -11,18 +11,21 @@ Please make sure that you `git fetch` and `git pull` before you start work on so
 Function names should be descriptive and use `snake_case`.  These don't need to be Java length names, but a couple of words goes a long way.
 
 ### Function Documentation
-All functions must have a supporting document string defining what the function takes in as parameters, what it outputs, the type of the variable, and a general description of what it does / how it works if the logic is complex.  For example:
+All functions must have a supporting document string following the Google Python Style Guide ([see](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings)).  The description of the function should include the general operation as well as any complex logic.  For example:
 
 ```python
-"""
-This complex mathematical operation is yielded by the laws of addition.  Please reference Goldstein and Harowitz 
-for more information, chapters 15-17.  The first numbers value is added to the value of the second number and the resulting mathematical expression is returned.
-
-@param    num1    int   the first number in the addition operation
-@param    num2    int   the second number in the addition operation
-@return           int   the result of the addition operation
-"""
 def sum_two_numbers(num1, num2):
+    """
+    This complex mathematical operation is yielded by the laws of addition.  Please reference Goldstein and Harowitz 
+    for more information, chapters 15-17.  The first numbers value is added to the value of the second number and the resulting mathematical expression is returned.
+
+    Args:
+        num1 (int): the first number in the addition operation
+        num2 (int): the second number in the addition operation
+
+    Returns:
+        (int): the result of the addition operation
+    """
     return num1 + num2
 ```
 
@@ -37,24 +40,30 @@ Module providing absolute value functions.
 @author:  Mark Freeman
 """
 
-"""
-Determines if a number is negative or not.
-
-@param    num   int   the number in question
-@return         bool  boolean stating that the number is negative
-"""
 def _is_negative(num):
+    """
+    Determines if a number is negative or not.
+
+    Args:
+        num (int): the number in question
+
+    Returns:
+        (bool): the number is negative
+    """
     if(num < 0):
         return True
     return False
 
-"""
-Gives the absolute value of a number.
-
-@param    num   int   the number to take absolute value of
-@return         int   the absolute value of the number in question
-"""
 def absolute_value(num):
+    """
+    Gives the absolute value of a number.
+
+    Args:
+        num (int): the number to take absolute value of
+
+    Returns:
+        (int): the absolute value of the number in question
+    """
     if(_is_negative(num)):
         return num * -1
     return num
@@ -64,7 +73,7 @@ def absolute_value(num):
 
 As you develop and complete user stories, please do not commit to `master`. That would be bad.  Instead, open up a new branch from `dev` each time you intend to create a new feature.  This helps to keep things encapsulated.
 
-Once you have tested your new user story locally and assured proper functionality, you may then merge your branch up to `dev`.  Then, just as before, reopen a new branch if you want to start a new feature.  Every so often, we will then take all of the completed user stories and merge them up to `master`.
+Once you have tested your new user story locally and assured proper functionality, you may then merge your branch up to `dev`.  Then, just as before, open a new branch if you want to start a new feature.  Every so often, we will then take all of the completed user stories and merge them up to `master`.
 
 Never commit directly to `dev` or to `master`.  This increases the odds of encountering a merge conflict.
 
