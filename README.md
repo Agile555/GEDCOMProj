@@ -11,7 +11,7 @@ Please make sure that you `git fetch` and `git pull` before you start work on so
 Function names should be descriptive and use `snake_case`.  These don't need to be Java length names, but a couple of words goes a long way.
 
 ### Function Documentation
-All functions must have a supporting document string following the Google Python Style Guide (https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings).  The description of the function should include the general operation as well as any complex logic.  For example:
+All functions must have a supporting document string following the Google Python Style Guide ([see](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings)).  The description of the function should include the general operation as well as any complex logic.  For example:
 
 ```python
 def sum_two_numbers(num1, num2):
