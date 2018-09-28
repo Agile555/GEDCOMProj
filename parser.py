@@ -1,123 +1,13 @@
 """
 Main parser module that populates an SQLite database from a .ged input file.  Please note that this
 parser does not support level 2 tags apart from the DATE tag.
+
 @author: Mark Freeman
 """
 
 from prettytable import from_db_cursor
+from tags import d, i
 import datetime
-
-d = { #not all tags have parallels, but all headers come from one or more tags
-    'INDI': {
-        'level': '0',
-        'parents': [],
-        'backwards': True,
-        'parallel': 'ID',
-        'number_of_attributes': 9
-    },
-    'FAM': {
-        'level': '0',
-        'parents': [],
-        'backwards': True,
-        'parallel': 'ID',
-        'number_of_attributes': 8
-    },
-    'HEAD': {
-        'level': '0',
-        'parents': [],
-        'backwards': False
-    },
-    'TRLR': {
-        'level': '0',
-        'parents': [],
-        'backwards': False
-    },
-    'NOTE': {
-        'level': '0',
-        'parents': [],
-        'backwards': False
-    },
-    'NAME': {
-        ''
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Name'
-    },
-    'SEX': {
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Gender'
-    },
-    'BIRT': {
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Birthday'
-    },
-    'DEAT': {
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Death'
-    },
-    'FAMC': {
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Child'
-    },
-    'FAMS': {
-        'level': '1',
-        'parents': ['INDI'],
-        'backwards': False,
-        'parallel': 'Spouse'
-    },
-    'MARR': {
-        'level': '1',
-        'parents': ['FAM'],
-        'backwards': False,
-        'parallel': 'Married'
-    },
-    'HUSB': {
-        'level': '1',
-        'parents': ['FAM'],
-        'backwards': False,
-        'parallel': 'Husband ID'
-    },
-    'WIFE': {
-        'level': '1',
-        'parents': ['FAM'],
-        'backwards': False,
-        'parallel': 'Wife ID'
-    },
-    'DIV': {
-        'level': '1',
-        'parents': ['FAM'],
-        'backwards': False,
-        'parallel': 'Divorced'
-    },
-    'CHIL': {
-        'level': '1',
-        'parents': ['FAM'],
-        'backwards': False,
-        'parallel': 'Children'
-    },
-    'DATE': {
-        'level': '2',
-        'parents': ['BIRT', 'DEAT', 'DIV', 'MARR'],
-        'backwards': False
-    }
-}
-
-#inflate a dictionary to hold the tags and their position in the table
-indi_table_tags = ['ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouse']
-fam_table_tags = ['ID', 'Married', 'Divorced', 'Husband ID', 'Husband Name', 'Wife ID', 'Wife Name', 'Children']
-i = {
-    'INDI': dict(zip(indi_table_tags, range(len(indi_table_tags)))),
-    'FAM': dict(zip(fam_table_tags, range(len(fam_table_tags))))
-}
 
 stack = [] #controls parent-child relationships among tags
 cursor = [] #modifiable buffer to hold data to be inserted into DB
@@ -149,12 +39,58 @@ def repair_stack(tag_name):
     Args:
         tag_name (string): the name of the tag to place 
             on the stack
+
+    Returns:
+        None
     """
     global stack #forgive me for I have sinned
     if(d.get(tag_name).get('level') == '0'): #if it's level 0, empty the stack and replace bottom with new tag
         stack = [tag_name]
     elif(d.get(tag_name).get('level') == '1'): #if it's level 1, replace second to last element and remove all others
         stack = [stack[0], tag_name]
+
+#################### Database Methods ##################
+
+def search_db(table, column, name, value, c):
+    """
+    SQLite wrapper to expose a simple selection query as a function.
+
+    Args:
+        table (string): the name of the table to search
+        column (string): the column to return values from
+        name (string): name of the value to match on
+        value (string): value to match with
+        c (cursor): An SQLite cursor object connecting us
+            to the database
+
+    Returns:
+        (cursor): cursor representing all rows that 
+            matched the search  
+    """
+    return c.execute("SELECT {} FROM {} WHERE {}='{}'".format(column, table, name, value)) #for some reason SQLite wants them in quotes
+
+def insert_into_db(table, lst, c):
+    """
+    SQLite wrapper to expose an insertion query as a function.
+
+    Args:
+        table (string): the name of the table to insert into
+        lst (list): a list of values to insert into 
+            the database
+        c (cursor): An SQLite cursor object connecting us
+            to the database
+
+    Returns:
+        None
+    """
+    if(table == 'INDI'):
+        c.execute('INSERT INTO INDI VALUES (?,?,?,?,?,?,?,?,?)', lst) #value schemes are different for different tables
+    if(table == 'FAM'):
+        c.execute('INSERT INTO FAM VALUES (?,?,?,?,?,?,?,?)', lst)
+    if(table == 'CHLD'):
+        c.execute('INSERT INTO CHLD VALUES (?,?)', lst)
+
+#################### Cursor Methods ####################
 
 def adjust_entries(type, c): #after filling in direct related tags, fill secondary related
     """
@@ -177,7 +113,12 @@ def adjust_entries(type, c): #after filling in direct related tags, fill seconda
     Args:
         type (string): Either `INDI` or `FAM`, which 
             denotes the cursor format that is currently 
-            being used.
+            being used
+        c (cursor): An SQLite cursor object connecting us
+            to the database
+
+    Returns:
+        None
     """
     if(type == 'INDI'):
         if(exists(cursor[i[type]['Birthday']])): #we were given a birth date, must fill in age
@@ -193,43 +134,6 @@ def adjust_entries(type, c): #after filling in direct related tags, fill seconda
         add_children_to_db(cursor[i[type]['ID']], c) #go grab the family id and populate the children in the database with it
         add_spouse_names(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']], c)
 
-#################### Database Methods ##################
-
-
-def search_db(table, column, name, value, c):
-    """
-    SQLite wrapper to expose a simple selection query as a function.
-
-    Args:
-        table (string): the name of the table to search
-        column (string): the column to return values from
-        name (string): name of the value to match on
-        value (string): value to match with
-
-    Returns:
-        (cursor): cursor representing all rows that 
-            matched the search  
-    """
-    return c.execute("SELECT {} FROM {} WHERE {}='{}'".format(column, table, name, value)) #for some reason SQLite wants them in quotes
-
-def insert_into_db(table, lst, c):
-    """
-    SQLite wrapper to expose an insertion query as a function.
-
-    Args:
-        table (string): the name of the table to insert into
-        lst (list): a list of values to insert into 
-            the database
-    """
-    if(table == 'INDI'):
-        c.execute('INSERT INTO INDI VALUES (?,?,?,?,?,?,?,?,?)', lst) #value schemes are different for different tables
-    if(table == 'FAM'):
-        c.execute('INSERT INTO FAM VALUES (?,?,?,?,?,?,?,?)', lst)
-    if(table == 'CHLD'):
-        c.execute('INSERT INTO CHLD VALUES (?,?)', lst)
-
-#################### Cursor Methods ####################
-
 def empty_cursor(num_slots): #sometimes global is a necessary evil
     """
     Empties and repopulates the cursor with an appropriate number of slots.  Generally called after an insertion.
@@ -237,6 +141,9 @@ def empty_cursor(num_slots): #sometimes global is a necessary evil
     Args:
         num_slots (int): the number of "NA" slots to
             inflate the cursor with
+
+    Returns:
+        None
     """
     global cursor
     cursor = ["NA"] * num_slots
@@ -259,12 +166,21 @@ def append(index, str):
         cursor[index] = str
 
 def add_children_to_db(family_id, c):
-    #grab all of the children in the list in the cursor and toss them into the db
-    children = cursor[i['FAM']['Children']].split(',') #either the cursor holds a list in that position and we join it when we display
-    #or it holds a comma separated string and we split here
-    #if we do it the second way, we must make sure the individual doesn't have a comma in their name
+    """
+    Adds children specified in the 'Children' column of the FAM cursor to the database. The value
+    in the cursor will be a comma separated list of children IDs, which will be split and appended
+    one by one to the db.
+
+    Args:
+        family_id (string): the ID of the family that each of these children belong to
+        c (cursor): An SQLite cursor object connecting us to the database
+
+    Returns:
+        None
+    """
+    children = cursor[i['FAM']['Children']].split(',') #keep in mind, user IDs cannot have commas
     for child in children:
-        insert_into_db('CHLD', [family_id, child], c) #toss the child into the children's table
+        insert_into_db('CHLD', [family_id, child], c)
 
 def add_spouse_names(husb, wife, c):
     """
@@ -273,6 +189,9 @@ def add_spouse_names(husb, wife, c):
     Args:
         husb (string): id of the husband
         wife (string): id of the wife
+
+    Returns:
+        None
     """
     val = search_db('INDI', 'Name', 'ID', husb, c).fetchone()
     if(val):
@@ -289,7 +208,7 @@ def exists(str):
         str (string): the value in the cursor
 
     Returns:
-        (bool): the value is not null
+        (bool): the value is populated already in the cursor
     """
     return (str != 'NA')
 
@@ -335,6 +254,9 @@ def process(line, c): #goal is to make sure that it is at its own valid level AN
 
     Args:
         line (string): one line of the GEDCOM file
+
+    Returns:
+        None
     """
     arr = line.split(" ")
     level, tag_name, args = arr[0], None, [] #we know the level always
@@ -376,6 +298,14 @@ def parse(file, conn): #formerly main
     """
     Read in the GEDCOM file entered by the user and process each of them.  After the database
     is populated, show the contents of the tables.
+
+    Args:
+        file (string): a path to the file which we are planning to parse and store
+        conn (connection): an SQLite connection object which represents the database
+            we plan on writing information to
+
+    Returns:
+        None
     """
     global cursor
     cursor = [] #CRITICALLY IMPORTANT
@@ -398,5 +328,4 @@ def parse(file, conn): #formerly main
     #go grab the sql tables
     print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
     print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
-    c.close()
     conn.commit() #save db every time it's run
