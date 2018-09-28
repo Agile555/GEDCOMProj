@@ -1,9 +1,23 @@
-#Mark Freeman
+"""
+Collection of utilities to assist with general functions that were abstracted, such as resetting the database,
+carrying out the execution of a test, etc.
+
+@author: Mark Freeman
+"""
 from parser import parse
 import sqlite3
 
-#just a utility to reset the database if it gets freaky
 def reset_db(conn):
+    """
+    Reset the tables in a database and set up necessary structure.  Important to occur between tests if we have a single connection.
+
+    Args:
+        conn (connection): an SQLite connection object which represents the database
+            we plan on writing information to
+
+    Returns:
+        None
+    """
     c = conn.cursor()
     c.execute("DROP TABLE IF EXISTS INDI")
     c.execute("DROP TABLE IF EXISTS FAM")
@@ -14,8 +28,19 @@ def reset_db(conn):
     conn.commit()
 
 def execute_test(test_name, conn):
+    """
+    Carry out the execution of a test.  This involves setting up a fresh database to interact with and parsing the target file
+
+    Args:
+        test_name (string): name of the .ged file in the ged directory which we are going to test
+        conn (connection): an SQLite connection object which represents the database
+            we plan on writing information to
+
+    Returns:
+        None
+    """
     reset_db(conn)
-    parse(test_name, conn)
+    parse('./ged/' + test_name, conn)
 
 if __name__ == '__main__': #call utilities to eliminate megatron and start fresh
     conn = sqlite3.connect('megatron.db')

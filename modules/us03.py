@@ -1,4 +1,10 @@
-import sqlite3
+"""
+User story 03 prints an error if any individuals of the database are found to have a birth
+data that occurs after they have died.
+
+@author: Mark Freeman
+"""
+
 import datetime
 
 def print_rows(lst):
