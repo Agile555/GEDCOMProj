@@ -2,7 +2,6 @@ dist: trusty
 language: python
 #test against a bunch of python 3 versions
 python:
-  - "3.3"
   - "3.4"
   - "3.5"
   - "3.5-dev"

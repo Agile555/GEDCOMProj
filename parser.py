@@ -6,10 +6,6 @@ parser does not support level 2 tags apart from the DATE tag.
 
 from prettytable import from_db_cursor
 import datetime
-import sqlite3
-
-conn = sqlite3.connect('megatron.db')
-c = conn.cursor()
 
 d = { #not all tags have parallels, but all headers come from one or more tags
     'INDI': {
@@ -160,7 +156,7 @@ def repair_stack(tag_name):
     elif(d.get(tag_name).get('level') == '1'): #if it's level 1, replace second to last element and remove all others
         stack = [stack[0], tag_name]
 
-def adjust_entries(type): #after filling in direct related tags, fill secondary related
+def adjust_entries(type, c): #after filling in direct related tags, fill secondary related
     """
     Adjusts the cursor we build to include secondary entries, which are generated from
     direct entires.
@@ -186,20 +182,21 @@ def adjust_entries(type): #after filling in direct related tags, fill secondary 
     if(type == 'INDI'):
         if(exists(cursor[i[type]['Birthday']])): #we were given a birth date, must fill in age
             if(exists(cursor[i[type]['Death']])): #age will diff between age and death
-                append(i[type]['Age'], (cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365) #TODO: technically not right with leap years
+                append(i[type]['Age'], str((cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365)) #TODO: technically not right with leap years
             else: #didn't die, age is diff between birth and now
-                append(i[type]['Age'], (datetime.date.today() - cursor[i[type]['Birthday']]).days // 365)
+                append(i[type]['Age'], str((datetime.date.today() - cursor[i[type]['Birthday']]).days // 365))
         if(exists(cursor[i[type]['Death']])):
             append(i[type]['Alive'], 'N')
         else:
             append(i[type]['Alive'], 'Y')
-    elif(type == 'FAM'):
-        add_spouse_names(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']])
+    elif(type == 'FAM'): #TODO: Need to add a list of children into the cursor
+        add_children_to_db(cursor[i[type]['ID']], c) #go grab the family id and populate the children in the database with it
+        add_spouse_names(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']], c)
 
 #################### Database Methods ##################
 
 
-def search_db(table, column, name, value):
+def search_db(table, column, name, value, c):
     """
     SQLite wrapper to expose a simple selection query as a function.
 
@@ -215,7 +212,7 @@ def search_db(table, column, name, value):
     """
     return c.execute("SELECT {} FROM {} WHERE {}='{}'".format(column, table, name, value)) #for some reason SQLite wants them in quotes
 
-def insert_into_db(table, lst):
+def insert_into_db(table, lst, c):
     """
     SQLite wrapper to expose an insertion query as a function.
 
@@ -228,6 +225,8 @@ def insert_into_db(table, lst):
         c.execute('INSERT INTO INDI VALUES (?,?,?,?,?,?,?,?,?)', lst) #value schemes are different for different tables
     if(table == 'FAM'):
         c.execute('INSERT INTO FAM VALUES (?,?,?,?,?,?,?,?)', lst)
+    if(table == 'CHLD'):
+        c.execute('INSERT INTO CHLD VALUES (?,?)', lst)
 
 #################### Cursor Methods ####################
 
@@ -259,7 +258,15 @@ def append(index, str):
     else:
         cursor[index] = str
 
-def add_spouse_names(husb, wife):
+def add_children_to_db(family_id, c):
+    #grab all of the children in the list in the cursor and toss them into the db
+    children = cursor[i['FAM']['Children']].split(',') #either the cursor holds a list in that position and we join it when we display
+    #or it holds a comma separated string and we split here
+    #if we do it the second way, we must make sure the individual doesn't have a comma in their name
+    for child in children:
+        insert_into_db('CHLD', [family_id, child], c) #toss the child into the children's table
+
+def add_spouse_names(husb, wife, c):
     """
     Retrieve the names of the husband and wife of a family using their IDs and append their name to the cursor.
 
@@ -267,10 +274,10 @@ def add_spouse_names(husb, wife):
         husb (string): id of the husband
         wife (string): id of the wife
     """
-    val = search_db('INDI', 'Name', 'ID', husb).fetchone()
+    val = search_db('INDI', 'Name', 'ID', husb, c).fetchone()
     if(val):
         append(i['FAM']['Husband Name'], val[0]) #it's a cursor, need to subscript
-    val = search_db('INDI', 'Name', 'ID', wife).fetchone()
+    val = search_db('INDI', 'Name', 'ID', wife, c).fetchone()
     if(val):
         append(i['FAM']['Wife Name'], val[0])
 
@@ -320,7 +327,7 @@ def is_valid_level(tag_name, level):
 
 #################### Main Methods ######################
 
-def process(line): #goal is to make sure that it is at its own valid level AND preceding a parent
+def process(line, c): #goal is to make sure that it is at its own valid level AND preceding a parent
     """
     Main function of the parser.  Take in a line from a file as text and inspect it to gather
     information as to what it is trying to do.  Check if that is allowed, and if it is, go ahead
@@ -348,8 +355,8 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
         if(level == '0'):
             if(is_backward_tag(tag_name)): #only backward tags constitute a new entry
                 if(cursor): #if one is already populated, go and insert it
-                    adjust_entries(stack[0])
-                    insert_into_db(stack[0], cursor)
+                    adjust_entries(stack[0], c)
+                    insert_into_db(stack[0], cursor, c)
                 repair_stack(tag_name)
                 empty_cursor(d[tag_name]['number_of_attributes']) #empty
                 append(i[tag_name][d[tag_name]['parallel']], " ".join(args)) #insert id
@@ -365,26 +372,31 @@ def process(line): #goal is to make sure that it is at its own valid level AND p
                 parent = stack[-1] #the last element on the stack is the immediate parent we need to modify with date
                 append(i[stack[0]][d[parent]['parallel']], datetime.datetime.strptime(" ".join(args), '%d %b %Y').date())
 
-def main():
+def parse(file, conn): #formerly main
     """
     Read in the GEDCOM file entered by the user and process each of them.  After the database
     is populated, show the contents of the tables.
     """
-    file_name = input('Please enter the name of the file you wish to validate: ')
-    #file_name = 'tests/family.ged' or 'test/proj02test.ged' for debugging
-    with open(file_name, 'r') as f:
+    global cursor
+    cursor = [] #CRITICALLY IMPORTANT
+    #TODO: Investigate and understand what the removal of these two lines does to the program.  The cursor
+    #appears to stay behind after the parser function has completed and pollutes the next call to parser,
+    #will erratically ruin test cases
+
+    #TODO: Remove global variables, make everything local
+
+    c = conn.cursor()
+    with open(file, 'r') as f:
 
         for line in f:
             line = line.strip('\n') #take off the newline
-            process(line)
+            process(line, c)
 
-        adjust_entries(stack[0])
-        insert_into_db(stack[0], cursor)
+    adjust_entries(stack[0], c)
+    insert_into_db(stack[0], cursor, c)
 
-        #go grab the sql tables
-        print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
-        print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
-        conn.commit() #save db every time it's run
-
-if __name__ == '__main__':
-    main()
+    #go grab the sql tables
+    print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
+    print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
+    c.close()
+    conn.commit() #save db every time it's run
