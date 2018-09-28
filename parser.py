@@ -5,9 +5,7 @@ parser does not support level 2 tags apart from the DATE tag.
 """
 
 from prettytable import from_db_cursor
-from utilities import reset_db
 import datetime
-import sqlite3
 
 d = { #not all tags have parallels, but all headers come from one or more tags
     'INDI': {
@@ -184,9 +182,9 @@ def adjust_entries(type, c): #after filling in direct related tags, fill seconda
     if(type == 'INDI'):
         if(exists(cursor[i[type]['Birthday']])): #we were given a birth date, must fill in age
             if(exists(cursor[i[type]['Death']])): #age will diff between age and death
-                append(i[type]['Age'], (cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365) #TODO: technically not right with leap years
+                append(i[type]['Age'], str((cursor[i[type]['Death']] - cursor[i[type]['Birthday']]).days // 365)) #TODO: technically not right with leap years
             else: #didn't die, age is diff between birth and now
-                append(i[type]['Age'], (datetime.date.today() - cursor[i[type]['Birthday']]).days // 365)
+                append(i[type]['Age'], str((datetime.date.today() - cursor[i[type]['Birthday']]).days // 365))
         if(exists(cursor[i[type]['Death']])):
             append(i[type]['Alive'], 'N')
         else:
@@ -228,7 +226,7 @@ def insert_into_db(table, lst, c):
     if(table == 'FAM'):
         c.execute('INSERT INTO FAM VALUES (?,?,?,?,?,?,?,?)', lst)
     if(table == 'CHLD'):
-        c.execute('INSERT INTO CHLD VALUES (?,?)', lst) #TODO: LEFT OFF HERE
+        c.execute('INSERT INTO CHLD VALUES (?,?)', lst)
 
 #################### Cursor Methods ####################
 
@@ -243,7 +241,6 @@ def empty_cursor(num_slots): #sometimes global is a necessary evil
     global cursor
     cursor = ["NA"] * num_slots
 
-#TODO:alter such that it places a list in the cursor and the adjusting entries function takes the list and joins with commas
 def append(index, str):
     """
     Appends an item to the cursor.  If the item already exists in the cursor, it forms a comma separated string of
@@ -375,11 +372,19 @@ def process(line, c): #goal is to make sure that it is at its own valid level AN
                 parent = stack[-1] #the last element on the stack is the immediate parent we need to modify with date
                 append(i[stack[0]][d[parent]['parallel']], datetime.datetime.strptime(" ".join(args), '%d %b %Y').date())
 
-def main(file, conn):
+def parse(file, conn): #formerly main
     """
     Read in the GEDCOM file entered by the user and process each of them.  After the database
     is populated, show the contents of the tables.
-    """    
+    """
+    global cursor
+    cursor = [] #CRITICALLY IMPORTANT
+    #TODO: Investigate and understand what the removal of these two lines does to the program.  The cursor
+    #appears to stay behind after the parser function has completed and pollutes the next call to parser,
+    #will erratically ruin test cases
+
+    #TODO: Remove global variables, make everything local
+
     c = conn.cursor()
     with open(file, 'r') as f:
 
@@ -387,15 +392,11 @@ def main(file, conn):
             line = line.strip('\n') #take off the newline
             process(line, c)
 
-        adjust_entries(stack[0], c)
-        insert_into_db(stack[0], cursor, c)
+    adjust_entries(stack[0], c)
+    insert_into_db(stack[0], cursor, c)
 
-        #go grab the sql tables
-        print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
-        print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
-        conn.commit() #save db every time it's run
-
-if __name__ == '__main__':
-    conn = sqlite3.connect(':memory:')
-    reset_db(conn)
-    main('tests/family.ged', conn)
+    #go grab the sql tables
+    print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
+    print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
+    c.close()
+    conn.commit() #save db every time it's run
