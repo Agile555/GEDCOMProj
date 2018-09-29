@@ -15,7 +15,7 @@ def get_rows(conn):
     res = []
     
     #grab all records where we have a spouse that has both died and been married
-    rows = c.execute('SELECT INDI.ID, Married, Death FROM FAM LEFT JOIN INDI ON (FAM."Husband ID" = INDI.ID OR FAM."Wife ID" = INDI.ID) WHERE Death != "NA"').fetchall()
+    rows = c.execute('SELECT INDI.ID, Married, Death FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID OR FAM."Wife ID" = INDI.ID) WHERE Death != "NA"').fetchall()
     for row in rows:
         if(datetime.strptime(row[1], '%Y-%m-%d') > datetime.strptime(row[2], '%Y-%m-%d')): #if marriage after death
             res.append(row)
