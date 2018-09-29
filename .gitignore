@@ -1,4 +1,6 @@
-modules/__pycache__
+.pytest_cache
+*/__pycache__
 env/
 .vscode
 *.db
+__pycache__
