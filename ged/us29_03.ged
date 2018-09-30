@@ -1,0 +1,14 @@
+0 NOTE @author: Michael Ameer
+0 NOTE Insert two persons deceased
+0 US29_T03_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 AUG 1990
+1 DEAT
+2 DATE 6 DEC 2010
+0 US29_T03_I02 INDI
+1 NAME Jane Smith
+1 BIRT
+2 DATE 1 JUN 1960
+1 DEAT
+2 DATE 6 AUG 2010
