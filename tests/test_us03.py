@@ -5,7 +5,7 @@ Test for user story 03.
 """
 
 from modules.us03 import get_rows
-from utilities import execute_test
+from lib.utilities import execute_test
 import sqlite3
 
 conn = sqlite3.connect(':memory:')

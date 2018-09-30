@@ -4,7 +4,7 @@ User Story 07 ensures that no person be over 150 years of age.
 @author: Besnik Balaj
 """
 
-from user_story import UserStory
+from lib.user_story import UserStory
 
 class UserStory07(UserStory):
 
