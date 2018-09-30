@@ -1,10 +1,16 @@
-import sqlite3
-from modules.us07 import get_rows
+"""
+Test for user story 07.
+
+@author: Besnik Balaj
+"""
+
+from modules.us07 import UserStory07
 from utilities import execute_test
+from sqlite3 import connect
 
+conn = connect(':memory:')
+user_story_07 = UserStory07()
 
-conn = sqlite3.connect(':memory:')
-
-def test_AllPass(): #Nothing in here exceeds 150 years of age
+def test_us07_01():
     execute_test('us07_01.ged', conn)
-    assert get_rows(conn) == []
+    assert user_story_07.get_rows(conn) == [('US07_T01_I01', 'NA')]
