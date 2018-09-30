@@ -1,0 +1,9 @@
+0 NOTE @author: Besnik Balaj
+0 NOTE Insert multiple people who is over 150 years old, not specifying death
+0 US07_T04_I01 INDI
+1 BIRT
+2 DATE 1 JAN 1800
+1 DEAT
+0 US07_T04_I02 INDI
+1 BIRT
+2 DATE 22 JUN 1820
