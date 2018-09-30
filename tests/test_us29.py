@@ -1,3 +1,9 @@
+"""
+Test for user story 29.
+
+@author: Michael Ameer
+"""
+
 from modules.us29 import UserStory29
 from lib.utilities import execute_test
 from sqlite3 import connect

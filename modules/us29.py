@@ -11,14 +11,13 @@ class UserStory29(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print(rows)
+            print('ALERT: User {} is deceased.'.format(row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()
-        c.execute("SELECT ID FROM INDI WHERE Death != 'NA'")
         res = []
-        row = c.fetchone()
-        while(row):
+
+        rows = c.execute("SELECT ID FROM INDI WHERE Death != 'NA'").fetchall()
+        for row in rows:
             res.append(row[0])
-            row = c.fetchone()
         return res
