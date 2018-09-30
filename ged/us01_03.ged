@@ -1,0 +1,18 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert people with dates after the current date
+0 US01_T03_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 3000
+0 US01_T03_F02 FAM
+1 NAME John Smith
+1 MARR
+2 DATE 1 JAN 3000
+0 US01_T03_F03 FAM
+1 NAME John Smith
+1 DIV
+2 DATE 1 JAN 3000
+0 US01_T03_I04 INDI
+1 NAME John Smith
+1 DEAT
+2 DATE 1 JAN 3000
