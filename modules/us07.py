@@ -17,5 +17,9 @@ class UserStory07(UserStory):
 
     def get_rows(self, conn):
         c = conn.cursor()
-        rows = c.execute('SELECT ID, Death FROM INDI WHERE Age > 150').fetchall()
-        return rows
+        rows = c.execute('SELECT ID, Death, Age FROM INDI WHERE Age != "NA" ').fetchall()
+        res = []
+        for row in rows:
+            if int(row[2]) > 150:
+                res.append(row)
+        return res
