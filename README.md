@@ -30,8 +30,6 @@ def sum_two_numbers(num1, num2):
 ```
 
 ### Modules
-Modules must be implemented in their own file and then imported into `index.py`.  Please provide unit tests inside of your module that you execute on your own before pushing to the repository.
-
 If starting a new module, please specify a docstring at the top specifying the user story that this module helps satisfy as well as the author(s).  Python has no built-in support for encapsulation in modules, however, all private methods of a module should be prefixed with an underscore.  For example:
 
 ```python
@@ -68,6 +66,77 @@ def absolute_value(num):
         return num * -1
     return num
 ```
+## On Skeletons, Tests, and User Stories
+The project skeleton follows this general format:
+
+```bash
+root
+├── ged
+│   ├── a.ged
+│   ├── bunch.ged
+│   ├── of.ged
+│   ├── ged.ged
+│   └── files.ged
+├── tests
+│   └── test_01_that_calls_ged_files.py
+├── modules
+│   └── user_story_01.py
+├── index.py
+├── parser.py
+├── tags.py
+├── utilities.py
+├── megatron.db
+└── requirements.txt
+```
+
+All testing will be done via `pytest`.  Hence, all testing functinos should be stored as a `test_something` file under the `tests` directory.  If the testing functions are not placed here, Travis will not see them.  To run the test suite, simply run `pytest tests` from the project root.
+
+Similarly, all .ged files which support tests should be placed in the `ged` directory.  When testing, be sure to import the `execute_test` function after importing it from `utilities.py`.  This simplifies testing, as you will not need to worry about database schemas or clearing out previous test results.  When supplying the name of your test to this function, simply specify the name of the file within the `ged` directory, do not provide a path.
+
+### Writing Tests
+Test cases do not need to adhere to the same style guide as all other modules.  Tests should still have a preamble docstring naming which user story the file is for, as well as the author name(s), but docstrings inside of functions are not necessary.  For example:
+
+```python
+"""
+Test to make sure no goats are in the tree, user story 42
+@author: Mark Freeman
+"""
+
+from modules.my_user_story import get_rows
+from utilities import execute_test
+import sqlite3
+
+conn = sqlite3.connect(':memory:')
+
+def test_my_user_story_01():
+    execute_test('my_user_story_01.ged', conn)
+    assert get_rows(conn) == [] #checking all-good input
+
+def test_my_user_story_02():
+    execute_test('my_user_story_02.ged', conn)
+    assert get_rows(conn) == [('This is a row of interest to this test'), ('Another import condition')] #checking bad input
+    
+#...and so on
+```
+
+### Writing User Stories
+User stories all share some basic functionalities: they should be able to query a database for rows of interest to them and print messages to the user that detail information from those rows.  Hence, all user stories should support two basic methods -- `get_rows` and `_print_rows`.  For example:
+
+```python
+def _print_rows(rows): #private
+    for row in rows:
+        print('{} is a good boy!'.format(row[0])) #we assume list has [name, is_good_boy]
+        
+def get_rows(conn)
+    c = conn.cursor()
+    rows = c.execute('select name from dogs where is_good_boy = 1').fetchall() #sometimes rows must be filtered further
+    return rows
+    
+def user_story(conn): #used by index.py to generate error messages when parsing user input files
+    rows = get_rows(conn)
+    print_rows(rows)
+```
+Some user stories may need to flesh out this pattern slightly more, but this can provide the basis for many user stories to build upon.
 
 ## Feature Promotion
 
