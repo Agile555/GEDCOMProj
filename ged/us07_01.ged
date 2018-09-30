@@ -1,0 +1,123 @@
+0 NOTE GitHub: Agile555/GEDCOMProj
+0 NOTE Mark Freeman
+0 NOTE Family Tree for SSW 555
+0 NOTE ==Begin Gilbert==
+0 I01 INDI
+1 NAME Gilbert /Smith/
+1 SEX M
+1 BIRT
+2 DATE 9 DEC 1959
+1 FAMS F01
+1 FAMS F02
+0 NOTE ==Finish Gilbert==
+0 NOTE ==Begin Jane==
+0 I02 INDI
+1 NAME Jane /Smith/
+1 SEX F
+1 BIRT
+2 DATE 9 FEB 1957
+1 DEAT
+2 DATE 12 SEP 1980
+1 FAMS F01
+0 NOTE ==Finish Jane==
+0 NOTE ==Begin Jade==
+0 I03 INDI
+1 NAME Jade /Smith/
+1 SEX F
+1 BIRT
+2 DATE 22 JUL 1956
+1 FAMS F02
+0 NOTE ==Finish Jade==
+0 NOTE ==Begin Robert==
+0 I04 INDI
+1 NAME Robert /Smith/
+1 SEX M
+1 BIRT
+2 DATE 12 SEP 1980
+1 FAMC F01
+1 FAMS F03
+0 NOTE ==Finish Robert==
+0 NOTE ==Begin Thomas==
+0 I05 INDI
+1 SEX M
+1 BIRT
+2 DATE 25 SEP 1982
+1 FAMC F02
+1 FAMS F04
+0 NOTE ==Finish Thomas==
+0 NOTE ==Begin Ava==
+0 I06 INDI
+1 NAME Ava /Smith/
+1 SEX F
+1 BIRT
+2 DATE 17 NOV 1980
+1 FAMS F03
+0 NOTE ==Finish Ava==
+0 NOTE ==Begin Lisa==
+0 I07 INDI
+1 NAME Lisa /Smith/
+1 SEX F
+1 BIRT
+2 DATE 2 JAN 1984
+1 FAMS F04
+0 NOTE ==Finish Lisa==
+0 NOTE ==Begin Jessica==
+0 I08 INDI
+1 NAME Jessica /Smith/
+1 SEX F
+1 BIRT
+2 DATE 9 FEB 2008
+1 FAMC F03
+0 NOTE ==Finish Jessica==
+0 NOTE ==Begin Benjamin==
+0 I09 INDI
+1 NAME Benjamin /Smith/
+1 SEX M
+1 BIRT
+2 DATE 13 MAR 2009
+1 FAMC F03
+0 NOTE ==Finish Benjamin==
+0 NOTE ==Begin Lucas==
+0 I10 INDI
+1 NAME Lucas /Smith/
+1 SEX M
+1 BIRT
+2 DATE 15 JAN 2007
+1 FAMC F04
+0 NOTE ==Finish Lucas==
+0 NOTE Now define families.  There will be four of them.
+0 NOTE ==Begin family 1==
+0 F01 FAM
+1 MARR
+2 DATE 9 DEC 1979
+1 HUSB I01
+1 WIFE I02
+1 CHIL I04
+1 DIV
+2 DATE 12 SEP 1980
+0 NOTE ==Finish Family 1==
+0 NOTE ==Begin Family 2==
+0 F02 FAM
+1 MARR
+2 DATE 12 JUL	1981
+1 HUSB I01
+1 WIFE I03
+1 CHIL I05
+0 NOTE ==Finish Family==
+0 NOTE ==Begin Family 3==
+0 F03 FAM
+1 MARR
+2 DATE 7 AUG 2006
+1 HUSB I04
+1 WIFE I06
+1 CHIL I08
+1 CHIL I09
+0 NOTE ==Finish Family 3==
+0 NOTE ==Begin Family 4==
+0 F04 FAM
+1 MARR
+2 DATE 5 AUG 2005
+1 HUSB I05
+1 WIFE I07
+1 CHIL I10
+0 NOTE ==Finish Family 4==
