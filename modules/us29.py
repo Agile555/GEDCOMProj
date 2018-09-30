@@ -5,7 +5,6 @@ User story 29 prints all individuals who are deceased
 """
 
 from lib.user_story import UserStory
-import sqlite3
 
 class UserStory29(UserStory):
 

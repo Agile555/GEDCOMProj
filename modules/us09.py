@@ -7,7 +7,6 @@ or were born after the death of their mother
 
 from lib.user_story import UserStory
 from datetime import datetime, timedelta
-import sqlite3
 
 class UserStory09(UserStory):
 

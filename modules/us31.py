@@ -5,7 +5,6 @@ User story 31 prints all individuals who are single AND over 30 years old
 """
 
 from lib.user_story import UserStory
-import sqlite3
 
 class UserStory31(UserStory):
 

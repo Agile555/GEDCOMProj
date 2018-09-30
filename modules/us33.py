@@ -6,7 +6,6 @@ User story 33 alerts the user to any individuals who are orphans.
 
 from lib.user_story import UserStory
 from datetime import datetime, timedelta
-import sqlite3
 
 class UserStory33(UserStory):
 
