@@ -1,0 +1,10 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert one person with correct ordering of birth and marriage
+0 US02_T02_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 3000
+0 US02_T02_F01 FAM
+1 HUSB US02_T02_I01
+1 MARR
+2 DATE 1 JAN 2000
