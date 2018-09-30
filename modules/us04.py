@@ -4,7 +4,7 @@ User story 04 prints an error if a family is found to have gotten divorced befor
 @author: Mark Freeman
 """
 
-from user_story import UserStory
+from lib.user_story import UserStory
 from datetime import datetime
 
 class UserStory04(UserStory):

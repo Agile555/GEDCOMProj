@@ -4,7 +4,7 @@ carrying out the execution of a test, etc.
 
 @author: Mark Freeman
 """
-from parser import parse
+from lib.parser import parse
 import sqlite3
 
 def reset_db(conn):
