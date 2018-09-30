@@ -4,7 +4,7 @@ carrying out the execution of a test, etc.
 
 @author: Mark Freeman
 """
-from parser import parse
+from lib.parser import parse
 import sqlite3
 
 def reset_db(conn):
@@ -42,6 +42,16 @@ def execute_test(test_name, conn):
     reset_db(conn)
     parse('./ged/' + test_name, conn)
 
-if __name__ == '__main__': #call utilities to eliminate megatron and start fresh
+def fill_megatron(test_name):
+    """
+    Fill the megatron database directly with the supplied ged file.  Useful for inspecting a database after parsing and for
+    running SQL commands directly against a parsed file, perhaps for testing to generate a get_rows function.
+
+    Args:
+        test_name (string): the name of the ged file inside of the ged directory to parse
+
+    Returns:
+        None
+    """
     conn = sqlite3.connect('megatron.db')
-    reset_db(conn)
+    execute_test(test_name, conn)

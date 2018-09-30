@@ -6,7 +6,7 @@ parser does not support level 2 tags apart from the DATE tag.
 """
 
 from prettytable import from_db_cursor
-from tags import d, i
+from lib.tags import d, i
 import datetime
 
 stack = [] #controls parent-child relationships among tags
