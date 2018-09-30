@@ -1,9 +1,26 @@
+# :tada::tada::tada: Release 1 Is Here! :tada::tada::tada:
+
+## New Things In Version 1.0.0:
+
+So far, we've been able to integrate __13 user stories__ from our catalog.  That means we are running _ahead_ of schedule!  Woo!
+
+Some features include:
+
+* Support for partial dates in GEDCOM
+* Checking of date order such as birth before marriage, marriage before divorce, etc.
+* Checking for people who were orphaned at some point in their life
+* Listing of common elements of interest in the database such as the deceased, the single, etc.
+
+The structure of this project has also been changed to better support in Python! You can expect future releases to follow a similar or identical directory pattern.
+
+Future releases will be packed with even more features, so stay tuned!  If you've taken our code for a spin, you can also let us know how we did via our GitHub handles! :nerd_face:
+
 # Get Ready for the Experience of a Lifetime
 
 Welcome to the greatest, most _agile_ git repository of all time.  It is our job to take on megatron (the database we'll be working with) while fending off hordes of user stories fed by a mad product owner.  Will the developer team be able to escape within deadlines? Stick around and find out.
 
 ## Rules of the Craft
-Please make sure that you `git fetch` and `git pull` before you start work on something, just to be sure you have the most recent version.  Also be sure to modularize your code, using new files whenever possible.
+Please make sure that you `git fetch` and `git pull` before you start work on something, just to be sure you have the most recent version.  Also be sure to modularize your code, following the current design structure whenever possible.
 
 ## Style Guide
 
@@ -35,6 +52,7 @@ If starting a new module, please specify a docstring at the top specifying the u
 ```python
 """
 Module providing absolute value functions.
+
 @author:  Mark Freeman
 """
 
@@ -67,7 +85,7 @@ def absolute_value(num):
     return num
 ```
 ## On Skeletons, Tests, and User Stories
-The project skeleton follows this general format:
+The current project skeleton follows this general format:
 
 ```bash
 root
@@ -81,70 +99,82 @@ root
 │   └── test_01_that_calls_ged_files.py
 ├── modules
 │   └── user_story_01.py
+├── lib
+│   └── index.py
+│   └── parser.py
+│   └── tags.py
+│   └── utilities.py
 ├── index.py
-├── parser.py
-├── tags.py
-├── utilities.py
 ├── megatron.db
 └── requirements.txt
 ```
 
-All testing will be done via `pytest`.  Hence, all testing functinos should be stored as a `test_something` file under the `tests` directory.  If the testing functions are not placed here, Travis will not see them.  To run the test suite, simply run `pytest tests` from the project root.
+All testing will be done via `pytest`.  Hence, all testing functions should be stored as a `test_something` file under the `tests` directory.  If the testing functions are not placed here, Travis will not see them.  To run the test suite, simply run `pytest tests` from the project root.
 
-Similarly, all .ged files which support tests should be placed in the `ged` directory.  When testing, be sure to import the `execute_test` function after importing it from `utilities.py`.  This simplifies testing, as you will not need to worry about database schemas or clearing out previous test results.  When supplying the name of your test to this function, simply specify the name of the file within the `ged` directory, do not provide a path.
+Similarly, all .ged files which support tests should be placed in the `ged` directory.  When testing, be sure to import the `execute_test` function after importing it from `lib.utilities.py`.  This simplifies testing, as you will not need to worry about database schemas or clearing out previous test results.  When supplying the name of your test to this function, simply specify the name of the file within the `ged` directory, do not provide a path.
 
 ### Writing Tests
-Test cases do not need to adhere to the same style guide as all other modules.  Tests should still have a preamble docstring naming which user story the file is for, as well as the author name(s), but docstrings inside of functions are not necessary.  For example:
+Test cases do not need to adhere to the same style guide as all other modules.  Tests should still have a preamble docstring naming which user story the file is for, as well as the author name(s), but docstrings inside of functions are not necessary.  Instead, simply define what you are passing to the test and checking.  For example:
 
 ```python
 """
-Test to make sure no goats are in the tree, user story 42
+Test to find goats in the tree, User Story 01
+
 @author: Mark Freeman
 """
 
-from modules.my_user_story import get_rows
-from utilities import execute_test
-import sqlite3
+from modules.us01 import UserStory01
+from lib.utilities import execute_test
+from sqlite3 import connect
 
-conn = sqlite3.connect(':memory:')
+conn = connect(':memory:')
+user_story_01 = UserStory01()
 
-def test_my_user_story_01():
-    execute_test('my_user_story_01.ged', conn)
-    assert get_rows(conn) == [] #checking all-good input
+#one goat placed in the tree that can be removed
+def test_us01_01():
+    execute_test('us01_01.ged', conn)
+    assert get_rows(conn) == []
 
-def test_my_user_story_02():
-    execute_test('my_user_story_02.ged', conn)
-    assert get_rows(conn) == [('This is a row of interest to this test'), ('Another import condition')] #checking bad input
+#multiple goats that simply refuse to leave the tree
+def test_us01_02():
+    execute_test('us01_02.ged', conn)
+    assert get_rows(conn) == [('This is a row of interest to this test'), ('Another import condition')]
     
 #...and so on
 ```
 
 ### Writing User Stories
-User stories all share some basic functionalities: they should be able to query a database for rows of interest to them and print messages to the user that detail information from those rows.  Hence, all user stories should support two basic methods -- `get_rows` and `_print_rows`.  For example:
+User stories all share some basic functionalities: they should be able to query a database for rows of interest to them and print messages to the user that detail information from those rows.  Hence, all user stories will extend from the abstract class `UserStory` implemented in _lib/user_story.py_. To instantiate this class, developers will need to implement two basic methods -- `get_rows` and `print_rows`.  For example:
 
 ```python
-def _print_rows(rows): #private
-    for row in rows:
-        print('{} is a good boy!'.format(row[0])) #we assume list has [name, is_good_boy]
-        
-def get_rows(conn)
-    c = conn.cursor()
-    rows = c.execute('select name from dogs where is_good_boy = 1').fetchall() #sometimes rows must be filtered further
-    return rows
-    
-def user_story(conn): #used by index.py to generate error messages when parsing user input files
-    rows = get_rows(conn)
-    print_rows(rows)
+"""
+User Story 02 alerts the user to any dogs who are found to be good boys
+
+@author Mark Freeman
+"""
+
+from lib.user_story import UserStory
+
+class UserStory02(UserStory):
+
+    def print_rows(rows):
+        for row in rows:
+            print('{} is a good boy!'.format(row[0]))
+            #we assume list has [(name, is_good_boy), ...]
+            
+    def get_rows(conn)
+        c = conn.cursor()
+        rows = c.execute('SELECT name FROM dogs WHERE is_good_boy = 1').fetchall()
+        #sometimes rows must be filtered further, see modules folder
+        return rows
 ```
-Some user stories may need to flesh out this pattern slightly more, but this can provide the basis for many user stories to build upon.
+Some user stories may need to flesh out this pattern slightly more.  For example, to support a date range functionality, `datetime` may need to be imported.  Construction of a more complete return variable or further SQL queries may also be necessary.
 
 ## Feature Promotion
 
 As you develop and complete user stories, please do not commit to `master`. That would be bad.  Instead, open up a new branch from `dev` each time you intend to create a new feature.  This helps to keep things encapsulated.
 
 Once you have tested your new user story locally and assured proper functionality, you may then merge your branch up to `dev`.  Then, just as before, open a new branch if you want to start a new feature.  Every so often, we will then take all of the completed user stories and merge them up to `master`.
-
-Never commit directly to `dev` or to `master`.  This increases the odds of encountering a merge conflict.
 
 ### Example
 
