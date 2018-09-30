@@ -1,0 +1,6 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert one person who was born after the current date
+0 US01_T01_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 3000
