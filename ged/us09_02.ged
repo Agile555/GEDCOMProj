@@ -1,0 +1,13 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Insert one family who had a child over 9 months after the death of the father
+0 US09_T02_I01 INDI
+1 FAMC US09_T02_F01
+1 BIRT
+2 DATE 1 JAN 2000
+0 US09_T02_I02 INDI
+1 FAMS US09_T02_F01
+1 DEAT
+2 DATE 1 JAN 1990
+0 US09_T02_F01 FAM
+1 HUSB US09_T02_I02
+1 CHIL US09_T02_I01
