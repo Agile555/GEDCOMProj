@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/Agile555/GEDCOMProj.svg?branch=master)](https://travis-ci.com/Agile555/GEDCOMProj)
 
-# :tada::tada::tada: Release 1 Is Here! :tada::tada::tada: 
+# :tada::tada::tada: GEDCOM Appricot :peach: Is Here! :tada::tada::tada: 
 
 ## New Things In Version 1.0.0:
 
