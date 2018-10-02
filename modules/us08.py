@@ -12,7 +12,7 @@ class UserStory08(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ERROR: Marriage on {} occurs after child {} born on {} for family {}.'.format(row[2], row[0], row[3], row[1]))
+            print('ERROR: FAMILY: US08: Marriage on {} occurs after child {} born on {} for family {}'.format(row[2], row[0], row[3], row[1]))
 
     def get_rows(self, conn):
         c = conn.cursor()

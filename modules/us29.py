@@ -10,7 +10,7 @@ class UserStory29(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ALERT: User {} is deceased.'.format(row[0]))
+            print('ALERT: INDIVIDUAL: US29: User {} is deceased'.format(row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()

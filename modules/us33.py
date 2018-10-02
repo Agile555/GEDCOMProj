@@ -11,7 +11,7 @@ class UserStory33(UserStory):
 
     def print_rows(self, rows):
         for row in rows: #TODO: Need to figure out exactly what information we should be printing, rather it be as descriptive as possible, or as little as needed
-            print('ALERT: Individual {} found to have become an orphan at age {}'.format(row[0], row[1]))
+            print('ALERT: INDIVIDUAL: US33: Individual {} found to have become an orphan at age {}'.format(row[0], row[1]))
 
     def get_rows(self, conn):
         c = conn.cursor()

@@ -11,7 +11,7 @@ class UserStory04(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ERROR: Divorce on {} occurs before marriage on {} for family {}'.format(row[2], row[1], row[0]))
+            print('ERROR: FAMILY: US04: Divorce on {} occurs before marriage on {} for family {}'.format(row[2], row[1], row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()

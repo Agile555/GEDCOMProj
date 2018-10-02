@@ -12,7 +12,7 @@ class UserStory03(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ERROR: Birthday on {} occurs after death on {} for user {}'.format(row[1], row[2], row[0]))
+            print('ERROR: INDIVIDUAL: US03: Birthday on {} occurs after death on {} for user {}'.format(row[1], row[2], row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()

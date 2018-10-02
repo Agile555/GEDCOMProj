@@ -13,9 +13,9 @@ class UserStory09(UserStory):
     def print_rows(self, rows):
         for row in rows:
             if(row[3] == 'Husband'): #different messages for husband and wife
-                print('ERROR: Individual {} found to have been born over 9 months after death of father {} in family {}'.format(row[1], row[2], row[0]))
+                print('ERROR: INDIVIDUAL: US09: Individual {} found to have been born over 9 months after death of father {} in family {}'.format(row[1], row[2], row[0]))
             else: #must be a wife
-                print('ERROR: Individual {} found to have been born after death of mother {} in family {}'.format(row[1], row[2], row[0]))
+                print('ERROR: INDIVIDUAL: US09: Individual {} found to have been born after death of mother {} in family {}'.format(row[1], row[2], row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()
