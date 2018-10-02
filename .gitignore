@@ -3,5 +3,7 @@
 env/
 .vscode
 *.db
+optimus_prime.ged
 __pycache__
 *.pyc
+output.txt

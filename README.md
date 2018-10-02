@@ -1,4 +1,6 @@
-# :tada::tada::tada: Release 1 Is Here! :tada::tada::tada:
+[![Build Status](https://travis-ci.com/Agile555/GEDCOMProj.svg?branch=master)](https://travis-ci.com/Agile555/GEDCOMProj)
+
+# :tada::tada::tada: GEDCOM Appricot :peach: Is Here! :tada::tada::tada: 
 
 ## New Things In Version 1.0.0:
 
@@ -100,9 +102,9 @@ root
 ├── modules
 │   └── user_story_01.py
 ├── lib
-│   └── index.py
 │   └── parser.py
 │   └── tags.py
+│   └── user_story.py
 │   └── utilities.py
 ├── index.py
 ├── megatron.db
