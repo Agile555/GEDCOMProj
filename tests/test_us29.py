@@ -17,11 +17,11 @@ def test_us29_01():
 
 def test_us29_02():
     execute_test('us29_02.ged', conn)
-    assert user_story_29.get_rows(conn) == [('US29_T02_I01')]
+    assert user_story_29.get_rows(conn) == [('US29_T02_I01', )]
 
 def test_us29_03():
     execute_test('us29_03.ged', conn)
-    assert user_story_29.get_rows(conn) == [('US29_T03_I01'),('US29_T03_I02')]
+    assert user_story_29.get_rows(conn) == [('US29_T03_I01', ),('US29_T03_I02', )] #these must be tuples
 
 def test_us29_04():
     execute_test('us29_04.ged', conn)

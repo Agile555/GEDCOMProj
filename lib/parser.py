@@ -330,6 +330,8 @@ def parse(file, conn): #formerly main
     insert_into_db(stack[0], cursor, c)
 
     #go grab the sql tables
+    print('\nIndividuals:')
     print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
+    print('\nFamilies:')
     print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
     conn.commit() #save db every time it's run

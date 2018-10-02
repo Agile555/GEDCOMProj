@@ -10,7 +10,7 @@ class UserStory31(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ALERT: Individual {} is both single and over age 30.'.format(row[0]))
+            print('ALERT: INDIVIDUAL: US31: Individual {} is both single and over age 30'.format(row[0]))
 
     def get_rows(self, conn):
         c = conn.cursor()

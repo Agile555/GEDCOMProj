@@ -9,8 +9,8 @@ from abc import ABC, abstractmethod
 class UserStory(ABC):
     
     def fire(self, conn):
-        rows = this.get_rows(self, conn)
-        this.print_rows(self, rows)
+        rows = self.get_rows(conn)
+        self.print_rows(rows)
     
     @abstractmethod
     def get_rows(self, conn):
