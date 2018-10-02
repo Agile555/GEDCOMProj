@@ -11,7 +11,7 @@ class UserStory01(UserStory):
     
     def print_rows(self, rows):
         for row in rows:
-            print ("ERROR: INDIVIDUAL: US01: " + row[0] + ": Date " + row[1] + " occurs in the future")
+            print ("ERROR: Individual {} with date {} occurs in the future".format(row[0], row[1]))
     
     def get_rows(self, conn):
         c = conn.cursor()

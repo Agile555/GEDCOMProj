@@ -28,11 +28,12 @@ class UserStory33(UserStory):
             if(birthday and husband_death and wife_death):
                 birthday = datetime.strptime(birthday[0], '%Y-%m-%d')
                 #we can't rely on the age attribute, as it will freeze once the child dies, must use his date of birth and the parents' date of death
+                #must ALSO ensure that the parents did not die ahead of their child somehow.  This is covered by another user story, but it will not prevent junk from entering the db
                 age_at_fathers_death = (datetime.strptime(husband_death[0], '%Y-%m-%d') - birthday).days // 365
                 age_at_mothers_death = (datetime.strptime(wife_death[0], '%Y-%m-%d') - birthday).days // 365
 
                 #if both parents died when he was under 18, he is an orphan
-                if(age_at_fathers_death < 18 and age_at_mothers_death < 18):
+                if(age_at_fathers_death < 18 and age_at_fathers_death > 0 and age_at_mothers_death < 18 and age_at_mothers_death > 0):
                     res.append((row[0], str(max(age_at_fathers_death, age_at_mothers_death)))) #we don't need to convert to string here, but for consistency with other tests
 
         return res

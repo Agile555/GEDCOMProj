@@ -4,24 +4,24 @@ User story 05 prints an error if any individuals are found to have gotten marrie
 @author: Mark Freeman
 """
 
+from lib.user_story import UserStory
 from datetime import datetime
 
-def print_rows(lst):
-    for row in lst:
-        print('ERROR: Marriage on ' + row[1] + ' occurs after death on ' + row[2] + ' for user ' + row[0])
+class UserStory05(UserStory):
 
-def get_rows(conn):
-    c = conn.cursor()
-    res = []
-    
-    #grab all records where we have a spouse that has both died and been married
-    rows = c.execute('SELECT INDI.ID, Married, Death FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID OR FAM."Wife ID" = INDI.ID) WHERE Death != "NA"').fetchall()
-    for row in rows:
-        if(datetime.strptime(row[1], '%Y-%m-%d') > datetime.strptime(row[2], '%Y-%m-%d')): #if marriage after death
-            res.append(row)
-    return res
+    def print_rows(self, rows):
+        for row in rows:
+            print('ERROR: Marriage on {} occurs after death on {} for user {}'.format(row[1], row[2], row[0]))
 
-#use same megatron connection for all use cases called from index.py
-def us05(conn):
-    rows = get_rows(conn)
-    print_rows(rows)
+    def get_rows(self, conn):
+        c = conn.cursor()
+        res = []
+        
+        #grab all records where we have a spouse that has both died and been married
+        rows = c.execute('SELECT INDI.ID, Married, Death FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID OR FAM."Wife ID" = INDI.ID) WHERE (Death != "NA" AND Married != "NA")').fetchall()
+        for row in rows:
+            #TODO add test cases which have NA marriage, death dates
+            
+            if(datetime.strptime(row[1], '%Y-%m-%d') > datetime.strptime(row[2], '%Y-%m-%d')): #if marriage after death
+                res.append(row)
+        return res
