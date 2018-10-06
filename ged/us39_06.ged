@@ -1,0 +1,9 @@
+0 NOTE @author: Mark Freeman
+0 NOTE One family whose anniversary just passed at the time of this writing
+0 US39_T06_I01 INDI
+0 US39_T06_I02 INDI
+0 US39_T06_F01 FAM
+1 MARR
+2 DATE 4 OCT 2000
+1 HUSB US39_T06_I01
+1 WIFE US39_T06_I02
