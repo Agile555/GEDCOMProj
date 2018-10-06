@@ -5,6 +5,7 @@ carrying out the execution of a test, etc.
 @author: Mark Freeman
 """
 from lib.parser import parse
+from datetime import timedelta
 import sqlite3
 
 def reset_db(conn):
@@ -55,3 +56,40 @@ def fill_megatron(test_name):
     """
     conn = sqlite3.connect('megatron.db')
     execute_test(test_name, conn)
+
+
+time_units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
+def is_in_range(d, d_start, length, unit='days'):
+    """
+    Determine if a date falls within a given range after a certain date.
+
+    Args:
+        d (datetime): a datetime object representing the date we are checking
+        d_start (datetime): a datetime object representing the start of the range we wish to check
+        length (int): the number of units we are extending the start date by to get our range
+        unit (string): a string representing the unit of time (days || weeks || months || years) 
+
+    Returns:
+        (bool): the date falls within the range
+    """
+    units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
+    if(d < d_start or d > d_start + timedelta(days = length * units[unit])):
+        return False
+    return True
+
+#TODO: work on documentation
+def is_upcoming(d, d_start, length, unit):
+    """
+    Determine if a date is within an upcoming range, regardless of the year. (e.g. birthday, anniversary, holiday)
+
+    Args:
+        d (datetime): a datetime object representing the date we are checking (usually today)
+        d_start (datetime): a datetime object representing the start of the range we wish to check (usually a birthday, anniversary, holiday, etc.)
+        length (int): the number of units we are extending the start date by to get our range
+        unit (string): a string representing the unit of time (days || weeks || months || years) 
+
+    Returns:
+        (bool): date is within the range on the month and day regardless of year
+    """
+    units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
+    return ((d_start - d) % timedelta(days=365.25)).days <= length * units[unit] #we assume the date we are checking is most recent
