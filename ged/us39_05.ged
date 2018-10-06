@@ -1,0 +1,11 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Family who divorced but would otherwise have an upcoming marriage
+0 US39_T05_I01 INDI
+0 US39_T05_I02 INDI
+0 US39_T05_F01 FAM
+1 MARR
+2 DATE 5 NOV 2000
+1 DIV
+2 DATE 5 NOV 2000
+1 HUSB US39_T05_I01
+1 WIFE US39_T05_I02

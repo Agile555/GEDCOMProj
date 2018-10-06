@@ -1,0 +1,11 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Family who has upcoming marraige but one of them is dead
+0 US39_T03_I01 INDI
+1 DEAT
+2 DATE 5 NOV 2000
+0 US39_T03_I02 INDI
+0 US39_T03_F01 FAM
+1 MARR
+2 DATE 5 NOV 2000
+1 HUSB US39_T03_I01
+1 WIFE US39_T03_I02
