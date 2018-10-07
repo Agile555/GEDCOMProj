@@ -1,5 +1,5 @@
 """
-Test for user story 34.
+Test for User Story 34.
 
 @author: Besnik Balaj
 """
