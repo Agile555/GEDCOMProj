@@ -12,7 +12,7 @@ class UserStory38(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            print('ALERT: INDIVIDUAL: US38: User {} has a birthday within the next 30 days on {}').format(row[0], row[1])
+            print('ALERT: INDIVIDUAL: US38: User {} has a birthday within the next 30 days on {}'.format(row[0], row[1]))
 
     def get_rows(self, conn):
         c = conn.cursor()
