@@ -1,0 +1,13 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Insert a family with five children, however we know nothing about when they were born.
+0 US32_T04_I01 INDI
+0 US32_T04_I02 INDI
+0 US32_T04_I03 INDI
+0 US32_T04_I04 INDI
+0 US32_T04_I05 INDI
+0 US32_T04_F01 FAM
+1 CHIL US32_T04_I01
+1 CHIL US32_T04_I02
+1 CHIL US32_T04_I03
+1 CHIL US32_T04_I04
+1 CHIL US32_T04_I05

@@ -1,0 +1,23 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Insert a family with five children.  Three of them was born on the next day, as the delivery occurred at 11:59 PM for the second child and 12:01 AM for third
+0 US32_T03_I01 INDI
+1 BIRT
+2 DATE 1 JAN 1990
+0 US32_T03_I02 INDI
+1 BIRT
+2 DATE 1 JAN 1990
+0 US32_T03_I03 INDI
+1 BIRT
+2 DATE 2 JAN 1990
+0 US32_T03_I04 INDI
+1 BIRT
+2 DATE 2 JAN 1990
+0 US32_T03_I05 INDI
+1 BIRT
+2 DATE 2 JAN 1990
+0 US32_T03_F01 FAM
+1 CHIL US32_T03_I01
+1 CHIL US32_T03_I02
+1 CHIL US32_T03_I03
+1 CHIL US32_T03_I04
+1 CHIL US32_T03_I05

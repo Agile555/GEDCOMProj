@@ -5,8 +5,10 @@ carrying out the execution of a test, etc.
 @author: Mark Freeman
 """
 from lib.parser import parse
-from datetime import timedelta
+from datetime import datetime, timedelta
 import sqlite3
+
+time_units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
 
 def reset_db(conn):
     """
@@ -57,8 +59,6 @@ def fill_megatron(test_name):
     conn = sqlite3.connect('megatron.db')
     execute_test(test_name, conn)
 
-
-time_units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
 def is_in_range(d, d_start, length, unit='days'):
     """
     Determine if a date falls within a given range after a certain date.
@@ -72,8 +72,7 @@ def is_in_range(d, d_start, length, unit='days'):
     Returns:
         (bool): the date falls within the range
     """
-    units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
-    if(d < d_start or d > d_start + timedelta(days = length * units[unit])):
+    if(d < d_start or d > d_start + timedelta(days = length * time_units[unit])):
         return False
     return True
 
@@ -91,5 +90,42 @@ def is_upcoming(d, d_start, length, unit):
     Returns:
         (bool): date is within the range on the month and day regardless of year
     """
-    units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
-    return ((d_start - d) % timedelta(days=365.25)).days <= length * units[unit] #we assume the date we are checking is most recent
+    return ((d_start - d) % timedelta(days=365.25)).days <= length * time_units[unit] #we assume the date we are checking is most recent
+
+def fast_forward(d, length, unit):
+    """
+    Fast forward a date a specified period of time
+
+    Args:
+        d (datetime): a datetime object representing the date to move forward from
+        length (int): the number of units we are extending the start date by
+        unit (string): a string representing the unit of time (days || weeks || months || years)
+
+    Returns:
+        (datetime): a date reflecting the appropriate amount of time moved forward from the given date
+    """
+    return d + timedelta(days = length * time_units[unit])
+
+def parse_string(d):
+    """
+    Parse a string from a year-month-day format to get a datetime object
+
+    Args:
+        d (string): a string that we wish to parse
+
+    Returns:
+        (datetime): a datetime object representing the parsed time
+    """
+    return datetime.strptime(d, '%Y-%m-%d')
+
+def format_date(d):
+    """
+    Format a datetime object into a string
+
+    Args:
+        d (datetime): a datetime object we wish to format
+    
+    Returns:
+        (string): a string representing our datetime object
+    """
+    return datetime.strftime(d, '%Y-%m-%d')
