@@ -25,3 +25,8 @@ def test_us18_02():
 def test_us18_03():
     execute_test('us18_03.ged', conn)
     assert user_story_18.get_rows(conn) == [('US18_T03_F02', 'US18_T03_I02', 'US18_T03_I03')]
+
+#one family where siblings married each other, they divorced and both died
+def test_us18_04():
+    execute_test('us18_04.ged', conn)
+    assert user_story_18.get_rows(conn) == [('US18_T04_F02', 'US18_T04_I01', 'US18_T04_I02')]
