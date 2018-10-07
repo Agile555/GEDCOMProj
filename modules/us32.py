@@ -13,8 +13,7 @@ class UserStory32(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            if(len(row[1]) > 1):
-                print('ALERT: FAMILY: US32: Family {} found to have many children born closely on {}'.format(row[0], ', '.join(row[1])))
+            print('ALERT: FAMILY: US32: Family {} found to have many children born closely on {}'.format(row[0], ', '.join(row[1])))
 
     def get_rows(self, conn):
         c = conn.cursor()
@@ -27,7 +26,6 @@ class UserStory32(UserStory):
             children = c.execute('SELECT Birthday FROM CHLD INNER JOIN INDI ON (FAM_ID = "{}" AND INDI_ID = INDI.ID)'.format(family[0])).fetchall()
             for child in children:
                 #we need to construct a counter to count birthdays
-                print(family[0])
                 if(d.get(family[0])):
                     d[family[0]][child[0]] += 1
                 else:
