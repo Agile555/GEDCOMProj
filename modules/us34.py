@@ -19,7 +19,6 @@ class UserStory34(UserStory):
 
     def get_rows(self, conn):
         c = conn.cursor()
-        res = []
         Spouses = []
 
         #grab records of spouses
