@@ -13,8 +13,7 @@ def main():
     conn = sqlite3.connect('megatron.db')
     reset_db(conn)
 
-    #fill the database with our entire test suite as one file
-    #command is `cat * > optimus_prime.ged`
+    #fill the database with our entire test suite as one file first
     execute_test('optimus_prime.ged', conn)
 
     #instantiate all of our tests and fire them

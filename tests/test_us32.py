@@ -8,7 +8,7 @@ from modules.us32 import UserStory32
 from lib.utilities import execute_test
 from sqlite3 import connect
 
-conn = connect('megatron.db')
+conn = connect(':memory:')
 user_story_32 = UserStory32()
 
 #Insert a family with five children all born on the same day
