@@ -22,8 +22,8 @@ class UserStory34(UserStory):
         Spouses = []
 
         #grab records of spouses
-        Husb = c.execute('SELECT INDI.ID, Age, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE AGE != "NA" AND Married != "NA"').fetchall()
-        Wife = c.execute('SELECT INDI.ID, Age, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE AGE != "NA" AND Married != "NA"').fetchall()
+        Husb = c.execute('SELECT INDI.ID, Age, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Age != "NA" AND Married != "NA"').fetchall()
+        Wife = c.execute('SELECT INDI.ID, Age, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Age != "NA" AND Married != "NA"').fetchall()
 
         #Assummed a wife needs to present for husband and marriage to exist
         for i in range(len(Husb)):
