@@ -1,0 +1,13 @@
+0 NOTE @author: Besnik Balaj
+0 NOTE Insert one couple where the Wife is not at least 14 during marriage
+0 US34_T01_I01 INDI
+1 BIRT
+2 DATE 1 JAN 1960
+0 US34_T01_I02 INDI
+1 BIRT
+2 DATE 1 JAN 2000
+0 US34_T01_F01 FAM
+1 MARR
+2 DATE 1 JAN 2010
+1 HUSB US34_T01_I01
+1 WIFE US34_T01_I02
