@@ -33,8 +33,5 @@ class UserStory10(UserStory):
         for fam in Spouses:
             HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
             WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
-            for i in range(len(Spouses)):
-                hold = [fam[0],HusbAge,fam[3],WifeAge]
-                Spouse_Info.insert(i,hold)
-                break
+            Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
         return Spouse_Info
