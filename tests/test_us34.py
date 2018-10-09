@@ -29,14 +29,14 @@ def test_us34_03():
 #Multiple husband twice as old
 def test_us34_04():
     execute_test('us34_04.ged',conn)
-    assert user_story_34.get_rows(conn) == [('US34_T04_I03', '50', 'US34_T04_I04','10'),('US34_T04_I01', '50', 'US34_T04_I02','10')]
+    assert user_story_34.get_rows(conn) == [('US34_T04_I01', '50', 'US34_T04_I02','10'),('US34_T04_I03', '50', 'US34_T04_I04','10')]
 
 #Multiple wife twice as old
 def test_us34_05():
     execute_test('us34_05.ged',conn)
-    assert user_story_34.get_rows(conn) == [('US34_T05_I03', '10', 'US34_T05_I04','50'),('US34_T05_I01', '10', 'US34_T05_I02','50')]
+    assert user_story_34.get_rows(conn) == [('US34_T05_I01', '10', 'US34_T05_I02','50'),('US34_T05_I03', '10', 'US34_T05_I04','50')]
 
-#Mixed of old/neither
+#Mixed of being twice as old
 def test_us34_06():
     execute_test('us34_06.ged',conn)
-    assert user_story_34.get_rows(conn) == [('US34_T06_I03', '50','US34_T06_I04','10'),('US34_T06_I01', '10', 'US34_T06_I02','50')]
+    assert user_story_34.get_rows(conn) == [('US34_T06_I01', '10', 'US34_T06_I02','50'),('US34_T06_I03', '50','US34_T06_I04','10')]
