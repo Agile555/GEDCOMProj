@@ -1,0 +1,7 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Insert one normal family
+0 US19_T04_I01 INDI
+0 US19_T04_I02 INDI
+0 US19_T04_F01 FAM
+1 HUSB US19_T04_I01
+1 WIFE US19_T04_I02
