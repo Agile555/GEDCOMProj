@@ -1,22 +1,23 @@
 """
-User story 34 list all couples who were married when the older spouse was more than twice the age as the younger spouse.
+User story 10 reports if marriage between husband and wife occurred before both were at least 14 years of age
 
 @author: Besnik Balaj
 """
-
 from datetime import datetime, timedelta
 from lib.user_story import UserStory
 
-class UserStory34(UserStory):
+class UserStory10(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            if int(row[1]) >= (2*int(row[3])):
-                print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Husband was more than twice the age as Husband. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
-            elif int(row[3]) >= (2*int(row[1])):
-                print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Wife was more than twice the age as Husband. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
+            if int(row[2]) <= 14 and int(row[3]) <= 14:
+                print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before either were at least 14 years of age. Husband was {} and the Wife was {}.'.format(row[0], row[2], row[1], row[4]))
+            elif int(row[2]) <= 14:
+                print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Husband was at least 14 years of age. Husband was {}.'.format(row[0], row[2], row[1]))
+            elif int(row[4]) <= 14:
+                print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[4]))
             else:
-                print('REPORT: FAMILY: US34: Husband {} and Wife {} married at reasonable age differences. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
+                pass
 
     def get_rows(self, conn):
         c = conn.cursor()
@@ -26,7 +27,7 @@ class UserStory34(UserStory):
         #grab records of spouses
         Husb = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
         Wife = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
-
+        #0-ID,1-HusbBirt,2-MarriageDate,3-ID,4-WifeBirt,5-Marriage
         for i in range(len(Husb)):
             Spouses.append(Husb[i] + Wife[i])
         for fam in Spouses:
