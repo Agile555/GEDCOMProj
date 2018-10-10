@@ -334,4 +334,6 @@ def parse(file, conn): #formerly main
     print(from_db_cursor(c.execute('SELECT * FROM INDI ORDER BY ID ASC')))
     print('\nFamilies:')
     print(from_db_cursor(c.execute('SELECT * FROM FAM  ORDER BY ID ASC')))
+    print('\nChildren:')
+    print(from_db_cursor(c.execute('SELECT * FROM CHLD ORDER BY INDI_ID ASC')))
     conn.commit() #save db every time it's run
