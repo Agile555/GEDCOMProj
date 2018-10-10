@@ -14,7 +14,7 @@ user_story_33 = UserStory33()
 #one orphaned child
 def test_us33_01():
     execute_test('us33_01.ged', conn)
-    assert user_story_33.get_rows(conn) == [('US33_T01_I01', '10')]
+    assert user_story_33.get_rows(conn) == [('US33_T01_I01', '9')]
 
 #one child whose father died when young, but his mother's death is unknown
 def test_us33_02():
@@ -44,4 +44,4 @@ def test_us33_06():
 #one orphaned child whose parents died at different times, mainly checking the age he was orphaned at
 def test_us33_07():
     execute_test('us33_07.ged', conn)
-    assert user_story_33.get_rows(conn) == [('US33_T07_I01', '10')]
+    assert user_story_33.get_rows(conn) == [('US33_T07_I01', '9')]
