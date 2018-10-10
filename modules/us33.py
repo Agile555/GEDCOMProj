@@ -5,12 +5,13 @@ User story 33 alerts the user to any individuals who are orphans.
 """
 
 from lib.user_story import UserStory
+from lib.utilities import parse_string, get_years
 from datetime import datetime, timedelta
 
 class UserStory33(UserStory):
 
     def print_rows(self, rows):
-        for row in rows: #TODO: Need to figure out exactly what information we should be printing, rather it be as descriptive as possible, or as little as needed
+        for row in rows:
             print('ALERT: INDIVIDUAL: US33: Individual {} found to have become an orphan at age {}'.format(row[0], row[1]))
 
     def get_rows(self, conn):
@@ -26,11 +27,11 @@ class UserStory33(UserStory):
 
             #only bother checking the conditions if we have them
             if(birthday and husband_death and wife_death):
-                birthday = datetime.strptime(birthday[0], '%Y-%m-%d')
+                birthday = parse_string(birthday[0])
                 #we can't rely on the age attribute, as it will freeze once the child dies, must use his date of birth and the parents' date of death
                 #must ALSO ensure that the parents did not die ahead of their child somehow.  This is covered by another user story, but it will not prevent junk from entering the db
-                age_at_fathers_death = (datetime.strptime(husband_death[0], '%Y-%m-%d') - birthday).days // 365
-                age_at_mothers_death = (datetime.strptime(wife_death[0], '%Y-%m-%d') - birthday).days // 365
+                age_at_fathers_death = get_years(parse_string(husband_death[0]) - birthday)
+                age_at_mothers_death = get_years(parse_string(wife_death[0]) - birthday)
 
                 #if both parents died when he was under 18, he is an orphan
                 if(age_at_fathers_death < 18 and age_at_fathers_death > 0 and age_at_mothers_death < 18 and age_at_mothers_death > 0):
