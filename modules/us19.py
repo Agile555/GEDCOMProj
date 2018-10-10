@@ -16,22 +16,26 @@ class UserStory19(UserStory):
         c = conn.cursor()
         res = []
 
-        #gather up all of the families where we have enough data to do this
-        families = c.execute('SELECT ID, "Husband ID", "Wife ID" FROM FAM JOIN CHLD ON (ID = FAM_ID) WHERE ("Husband ID" != "NA" AND "Wife ID" != "NA")').fetchall()
-        for family in families:
+        husband_families = c.execute('SELECT cousins.ID, cousins."Husband ID", cousins."Wife ID", parents."Husband ID", parents."Wife ID" FROM FAM AS parents JOIN CHLD ON (parents."Husband ID" = INDI_ID) JOIN FAM AS cousins ON(FAM_ID = cousins.ID)').fetchall();
+        wife_families = c.execute('SELECT parents."Husband ID", parents."Wife ID" FROM FAM AS parents JOIN CHLD ON (parents."Wife ID" = INDI_ID) JOIN FAM AS cousins ON(FAM_ID = cousins.ID)')
+        """
+        cousins.ID: Id of the family in question.  This is a marriage between two people who are supposedly cousins
+        cousins.Husband ID: The male cousin in question
+        cousins.Wife ID: The female cousin in question
+        parents.Husband ID: The husband's father's ID
+        parents.Wife ID: The husband's wife's ID
+        We'll need to repeat this query again for the wife and check for any "NA" values
+        """
+        for husband_family, wife_family in zip(husband_families, wife_families):
+            print(husband_family, wife_family)
+            husband_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_family[3])).fetchone()
+            husband_father_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_family[4])).fetchone()
+            wife_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(wife_family[0])).fetchone()
+            wife_father_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(wife_family[1])).fetchone()
 
-            #for every family, see if the husband and wife's parents are siblings
-            husband_parents = c.execute('SELECT "Husband ID", "Wife ID" FROM CHLD JOIN FAM ON (FAM."Husband ID" = INDI_ID)').fetchone()
-            wife_parents = c.execute('SELECT "Husband ID", "Wife ID" FROM CHLD JOIN FAM ON (FAM."Wife ID" = INDI_ID)').fetchone()
-
-            if(husband_parents and wife_parents):
-                husb_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_parents[0])).fetchone()
-                husb_father_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_parents[1])).fetchone()
-                wife_father_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(wife_parents[0])).fetchone()
-                wife_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(wife_parents[1])).fetchone()
-
-                if(husb_mother_fam and husb_father_fam and wife_father_fam and wife_mother_fam):
-                    if(husb_mother_fam[0] == wife_father_fam[0] or husb_mother_fam[0] == wife_mother_fam[0] or husb_father_fam[0] == wife_father_fam[0] or husb_father_fam[0] == wife_mother_fam[0]):
-                        res.append(family)
+            if((husband_mother_fam and wife_mother_fam) and (husband_mother_fam[0] == wife_mother_fam[0])): res.append(husband_family[0:3]) 
+            elif((husband_mother_fam and wife_father_fam) and (husband_mother_fam[0] == wife_father_fam[0])): res.append(husband_family[0:3]) 
+            elif((husband_father_fam and wife_mother_fam) and (husband_father_fam[0] == wife_mother_fam[0])): res.append(husband_family[0:3]) 
+            elif((husband_father_fam and wife_father_fam) and (husband_father_fam[0] == wife_father_fam[0])): res.append(husband_family[0:3]) 
                     
         return res
