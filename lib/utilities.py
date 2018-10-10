@@ -90,7 +90,7 @@ def is_upcoming(d, d_start, length, unit):
     Returns:
         (bool): date is within the range on the month and day regardless of year
     """
-    return ((d_start - d) % timedelta(days=365.25)).days <= length * time_units[unit] #we assume the date we are checking is most recent
+    return ((d_start - d) % timedelta(days=365.25)).days <= length * time_units[unit] #we assume the date we are checking is most recent    
 
 def fast_forward(d, length, unit):
     """
@@ -105,6 +105,32 @@ def fast_forward(d, length, unit):
         (datetime): a date reflecting the appropriate amount of time moved forward from the given date
     """
     return d + timedelta(days = length * time_units[unit])
+
+def rewind(d, length, unit):
+    """
+    Rewinds a date a specified period of time. (Same as fast forward function, just in reverse)
+
+    Args:
+        d (datetime): a datetime object representing the date to move forward from
+        length (int): the number of units we are extending the start date by
+        unit (string): a string representing the unit of time (days || weeks || months || years)
+
+    Returns:
+        (datetime): a date reflecting the appropriate amount of time moved forward from the given dates
+    """
+    return d + timedelta(days = length * time_units[unit])
+
+def get_years(delta):
+    """
+    Retrieve the years from a timedelta object.
+
+    Args:
+        delta (timedelta): the timedelta object to pull years from
+
+    Returns:
+        (int): the floored years passed in the timedelta object
+    """
+    return int(delta.days // time_units['years'])
 
 def parse_string(d):
     """
