@@ -20,13 +20,17 @@ class UserStory12(UserStory):
         res = []
         father = []
         mother = []
+        
         children = c.execute('SELECT CHLD.INDI_ID, INDI.Age, FAM."Husband ID", FAM."Wife ID" FROM CHLD INNER JOIN INDI ON (INDI.ID = CHLD.INDI_ID) INNER JOIN FAM ON (CHLD.FAM_ID = FAM.ID) WHERE FAM_ID != "NA" AND INDI_ID != "NA" AND INDI.Age > 0 AND INDI.Age != "NA"').fetchall()
-        for child in children:
-            # Assumed that there is only one father and one mother.
-            father = c.execute('SELECT ID, Age FROM INDI WHERE Age != "NA" AND Age > 0 AND ID = "{}"'.format(child[2])).fetchall()
-            mother = c.execute('SELECT ID, Age FROM INDI WHERE Age != "NA" AND Age > 0 AND ID = "{}"'.format(child[3])).fetchall()
-            if int(father[0][1]) >= int(child[1]) + 80: #get the ages and compare
-                res.append((father[0][0], child[0]))
-            if int(mother[0][1]) >= int(child[1]) + 60: #get the ages and compare
-                res.append((mother[0][0], child[0]))
+        if children != []:
+            for child in children:
+                # Assumed that there is only one father and one mother.
+                father = c.execute('SELECT ID, Age FROM INDI WHERE Age != "NA" AND Age > 0 AND ID = "{}"'.format(child[2])).fetchall()
+                mother = c.execute('SELECT ID, Age FROM INDI WHERE Age != "NA" AND Age > 0 AND ID = "{}"'.format(child[3])).fetchall()
+                if father != []:
+                    if int(father[0][1]) >= int(child[1]) + 80: #get the ages and compare
+                        res.append((father[0][0], child[0]))
+                if mother != []:
+                    if int(mother[0][1]) >= int(child[1]) + 60: #get the ages and compare
+                        res.append((mother[0][0], child[0]))
         return res
