@@ -40,3 +40,8 @@ def test_us10_05():
 def test_us10_06():
     execute_test('us10_06.ged', conn)
     assert user_story_10.get_rows(conn) == []
+
+#Family was stated but not filled with husband or wife
+def test_us10_07():
+    execute_test('us10_07.ged', conn)
+    assert user_story_10.get_rows(conn) == []
