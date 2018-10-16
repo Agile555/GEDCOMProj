@@ -40,3 +40,13 @@ def test_us34_05():
 def test_us34_06():
     execute_test('us34_06.ged',conn)
     assert user_story_34.get_rows(conn) == [('US34_T06_I01', '10', 'US34_T06_I02','50'),('US34_T06_I03', '50','US34_T06_I04','10')]
+
+#1 less husband
+def test_us34_07():
+    execute_test('us34_07.ged',conn)
+    assert user_story_34.get_rows(conn) == []
+
+#No husband or wife in family
+def test_us34_08():
+    execute_test('us34_08.ged',conn)
+    assert user_story_34.get_rows(conn) == []
