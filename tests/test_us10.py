@@ -35,3 +35,8 @@ def test_us10_04():
 def test_us10_05():
     execute_test('us10_05.ged', conn)
     assert user_story_10.get_rows(conn) == [('US10_T05_I01', '50', 'US10_T05_I02','9'),('US10_T05_I03', '9', 'US10_T05_I04','50')]
+
+#One extra husband
+def test_us10_06():
+    execute_test('us10_06.ged', conn)
+    assert user_story_10.get_rows(conn) == []
