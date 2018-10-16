@@ -21,11 +21,11 @@ def test_us12_12():
 
 def test_us12_03():
     execute_test('us12_03.ged', conn)
-    assert user_story_12.get_rows(conn) == [('US12_T01_I02', 'US12_T01_I03')]
+    assert user_story_12.get_rows(conn) == [('US12_T03_I02', 'US12_T03_I03')]
 
 def test_us12_04():
     execute_test('us12_04.ged', conn)
-    assert user_story_12.get_rows(conn) == [('US12_T01_I02', 'US12_T01_I03'), ('US12_T01_I02', 'US12_T01_I04'), ('US12_T01_I02', 'US12_T01_I05')]
+    assert user_story_12.get_rows(conn) == [('US12_T04_I02', 'US12_T04_I03'), ('US12_T04_I02', 'US12_T04_I04'), ('US12_T04_I02', 'US12_T04_I05')]
 
 def test_us12_05():
     execute_test('us12_05.ged', conn)
