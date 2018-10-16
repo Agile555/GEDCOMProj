@@ -28,10 +28,11 @@ class UserStory10(UserStory):
         Husb = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
         Wife = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
         #0-ID,1-HusbBirt,2-MarriageDate,3-ID,4-WifeBirt,5-Marriage
-        for i in range(len(Husb)):
-            Spouses.append(Husb[i] + Wife[i])
-        for fam in Spouses:
-            HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
-            WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
-            Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
+        if (len(Husb) == len(Wife)):
+            for i in range(len(Husb)):
+                Spouses.append(Husb[i] + Wife[i])
+            for fam in Spouses:
+                HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
+                WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
+                Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
         return Spouse_Info
