@@ -27,7 +27,6 @@ class UserStory19(UserStory):
         We'll need to repeat this query again for the wife and check for any "NA" values
         """
         for husband_family, wife_family in zip(husband_families, wife_families):
-            print(husband_family, wife_family)
             husband_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_family[3])).fetchone()
             husband_father_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(husband_family[4])).fetchone()
             wife_mother_fam = c.execute('SELECT FAM_ID FROM CHLD WHERE INDI_ID = "{}"'.format(wife_family[0])).fetchone()
