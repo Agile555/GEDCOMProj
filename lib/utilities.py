@@ -5,7 +5,10 @@ carrying out the execution of a test, etc.
 @author: Mark Freeman
 """
 from lib.parser import parse
+from datetime import datetime, timedelta
 import sqlite3
+
+time_units = {"days": 1, "weeks": 7, "months": 30.44, "years": 365.25}
 
 def reset_db(conn):
     """
@@ -55,3 +58,100 @@ def fill_megatron(test_name):
     """
     conn = sqlite3.connect('megatron.db')
     execute_test(test_name, conn)
+
+def is_in_range(d, d_start, length, unit='days'):
+    """
+    Determine if a date falls within a given range after a certain date.
+
+    Args:
+        d (datetime): a datetime object representing the date we are checking
+        d_start (datetime): a datetime object representing the start of the range we wish to check
+        length (int): the number of units we are extending the start date by to get our range
+        unit (string): a string representing the unit of time (days || weeks || months || years) 
+
+    Returns:
+        (bool): the date falls within the range
+    """
+    if(d < d_start or d > d_start + timedelta(days = length * time_units[unit])):
+        return False
+    return True
+
+#TODO: work on documentation
+def is_upcoming(d, d_start, length, unit):
+    """
+    Determine if a date is within an upcoming range, regardless of the year. (e.g. birthday, anniversary, holiday)
+
+    Args:
+        d (datetime): a datetime object representing the date we are checking (usually today)
+        d_start (datetime): a datetime object representing the start of the range we wish to check (usually a birthday, anniversary, holiday, etc.)
+        length (int): the number of units we are extending the start date by to get our range
+        unit (string): a string representing the unit of time (days || weeks || months || years) 
+
+    Returns:
+        (bool): date is within the range on the month and day regardless of year
+    """
+    return ((d_start - d) % timedelta(days=365.25)).days <= length * time_units[unit] #we assume the date we are checking is most recent    
+
+def fast_forward(d, length, unit):
+    """
+    Fast forward a date a specified period of time
+
+    Args:
+        d (datetime): a datetime object representing the date to move forward from
+        length (int): the number of units we are extending the start date by
+        unit (string): a string representing the unit of time (days || weeks || months || years)
+
+    Returns:
+        (datetime): a date reflecting the appropriate amount of time moved forward from the given date
+    """
+    return d + timedelta(days = length * time_units[unit])
+
+def rewind(d, length, unit):
+    """
+    Rewinds a date a specified period of time. (Same as fast forward function, just in reverse)
+
+    Args:
+        d (datetime): a datetime object representing the date to move forward from
+        length (int): the number of units we are extending the start date by
+        unit (string): a string representing the unit of time (days || weeks || months || years)
+
+    Returns:
+        (datetime): a date reflecting the appropriate amount of time moved forward from the given dates
+    """
+    return d + timedelta(days = length * time_units[unit])
+
+def get_years(delta):
+    """
+    Retrieve the years from a timedelta object.
+
+    Args:
+        delta (timedelta): the timedelta object to pull years from
+
+    Returns:
+        (int): the floored years passed in the timedelta object
+    """
+    return int(delta.days // time_units['years'])
+
+def parse_string(d):
+    """
+    Parse a string from a year-month-day format to get a datetime object
+
+    Args:
+        d (string): a string that we wish to parse
+
+    Returns:
+        (datetime): a datetime object representing the parsed time
+    """
+    return datetime.strptime(d, '%Y-%m-%d')
+
+def format_date(d):
+    """
+    Format a datetime object into a string
+
+    Args:
+        d (datetime): a datetime object we wish to format
+    
+    Returns:
+        (string): a string representing our datetime object
+    """
+    return datetime.strftime(d, '%Y-%m-%d')

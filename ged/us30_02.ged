@@ -1,0 +1,10 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert one person married
+0 US30_T02_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 AUG 1990
+0 US30_T02_F01 FAM
+1 HUSB US30_T02_I01
+1 MARR
+2 DATE 1 JAN 2000

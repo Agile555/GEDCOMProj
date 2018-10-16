@@ -4,7 +4,7 @@ Entry point for GEDCOM parsing application.
 @author: Mark Freeman, Michael Ameer, Besnik Balaj, Kipsy Quevada
 """
 
-from modules import us01, us02, us03, us04, us05, us06, us07, us08, us09, us29, us31, us33, us41
+from modules import us01, us02, us03, us04, us05, us06, us07, us08, us09, us18, us29, us31, us32, us33, us38, us39, us41
 from lib.utilities import reset_db, execute_test
 import sqlite3
 
@@ -13,8 +13,7 @@ def main():
     conn = sqlite3.connect('megatron.db')
     reset_db(conn)
 
-    #fill the database with our entire test suite as one file
-    #command is `cat * > optimus_prime.ged`
+    #fill the database with our entire test suite as one file first
     execute_test('optimus_prime.ged', conn)
 
     #instantiate all of our tests and fire them
@@ -28,9 +27,13 @@ def main():
     stories.append(us07.UserStory07())
     stories.append(us08.UserStory08())
     stories.append(us09.UserStory09())
+    stories.append(us18.UserStory18())
     stories.append(us29.UserStory29())
     stories.append(us31.UserStory31())
+    stories.append(us32.UserStory32())
     stories.append(us33.UserStory33())
+    stories.append(us38.UserStory38())
+    stories.append(us39.UserStory39())
     stories.append(us41.UserStory41())
 
     for story in stories:

@@ -1,0 +1,6 @@
+0 NOTE @author: Michael Ameer
+0 NOTE Insert one person who died in the last 30 days
+0 US36_T02_I01 INDI
+1 NAME John Smith
+1 DEAT
+2 DATE 1 OCT 2018

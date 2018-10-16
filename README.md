@@ -1,19 +1,17 @@
 [![Build Status](https://travis-ci.com/Agile555/GEDCOMProj.svg?branch=master)](https://travis-ci.com/Agile555/GEDCOMProj)
 
-# :tada::tada::tada: GEDCOM Appricot :peach: Is Here! :tada::tada::tada: 
+# :tada::tada::tada: Welcome to GEDCOM Banana :banana: :tada::tada::tada: 
 
-## New Things In Version 1.0.0:
+## New Things In Version 1.0.1:
 
-So far, we've been able to integrate __13 user stories__ from our catalog.  That means we are running _ahead_ of schedule!  Woo!
+This sprint, we implemented another __11__ user stories, putting us up to a total of 24!  This means we're keeping ahead of schedule in feature implementation.  Be on the lookout for more updates in the future!
 
-Some features include:
+New features include:
 
-* Support for partial dates in GEDCOM
-* Checking of date order such as birth before marriage, marriage before divorce, etc.
-* Checking for people who were orphaned at some point in their life
-* Listing of common elements of interest in the database such as the deceased, the single, etc.
-
-The structure of this project has also been changed to better support in Python! You can expect future releases to follow a similar or identical directory pattern.
+* Recognition of common marriage practices
+* Checking of individual ages within the database to assure proper maintenance of death records
+* Inclusion and testing of individual age generation based off of varying amounts of provided data
+* Detection of anomaly behavior in regards to families, such as large amount of siblings born at once.
 
 Future releases will be packed with even more features, so stay tuned!  If you've taken our code for a spin, you can also let us know how we did via our GitHub handles! :nerd_face:
 
