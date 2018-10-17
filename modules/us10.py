@@ -28,8 +28,8 @@ class UserStory10(UserStory):
         Spouse_Info = []
 
         #grab records of spouses
-        Husb = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
-        Wife = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA"').fetchall()
+        Husb = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA" AND FAM."Husband ID" != "NA"  AND FAM."Wife ID" != "NA"').fetchall()
+        Wife = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA" AND FAM."Husband ID" != "NA"  AND FAM."Wife ID" != "NA"').fetchall()
         #0-ID,1-HusbBirt,2-MarriageDate,3-ID,4-WifeBirt,5-Marriage
         if (len(Husb) == len(Wife)):
             for i in range(len(Husb)):
