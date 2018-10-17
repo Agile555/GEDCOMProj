@@ -11,7 +11,7 @@ class UserStory34(UserStory):
 
     def print_rows(self, rows):
         if rows == []:
-            print('REPORT: FAMILY: US10: Family exists but did not contain a Husband or Wife or neither')
+            print('REPORT: FAMILY: US34: Family exists but did not contain a Husband or Wife or neither')
         else:
             for row in rows:
                 if int(row[1]) >= (2*int(row[3])):
