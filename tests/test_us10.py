@@ -39,7 +39,7 @@ def test_us10_05():
 #One extra husband
 def test_us10_06():
     execute_test('us10_06.ged', conn)
-    assert user_story_10.get_rows(conn) == []
+    assert user_story_10.get_rows(conn) == [('US10_T06_I01', '10', 'US10_T06_I02', '50')]
 
 #Family was stated but not filled with husband or wife
 def test_us10_07():
