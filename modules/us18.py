@@ -10,7 +10,7 @@ class UserStory18(UserStory):
 
     def print_rows(self, rows):
         for row in rows:
-            pass
+            print('ALERT: FAMILY: US18: Family {} found to have been between siblings {} and {}'.format(row[0], row[1], row[2]))
 
     def get_rows(self, conn):
         c = conn.cursor()
