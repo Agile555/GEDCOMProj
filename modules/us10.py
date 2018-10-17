@@ -13,12 +13,13 @@ class UserStory10(UserStory):
             print('REPORT: FAMILY: US10: Family exists but did not contain a Husband or Wife or neither')
         else:
             for row in rows:
-                if int(row[2]) <= 14 and int(row[3]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before either were at least 14 years of age. Husband was {} and the Wife was {}.'.format(row[0], row[2], row[1], row[4]))
-                elif int(row[2]) <= 14:
+                print(row)
+                if int(row[1]) <= 14 and int(row[3]) <= 14:
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before either were at least 14 years of age. Husband was {} and the Wife was {}.'.format(row[0], row[2], row[1], row[3]))
+                elif int(row[1]) <= 14:
                     print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Husband was at least 14 years of age. Husband was {}.'.format(row[0], row[2], row[1]))
-                elif int(row[4]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[4]))
+                elif int(row[3]) <= 14:
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[3]))
                 else:
                     pass
 
