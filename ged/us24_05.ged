@@ -1,0 +1,20 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert two families where they don't have the same spouses but have the same marriage date
+0 US24_T05_I01 INDI
+1 NAME John Smith
+0 US24_T05_I02 INDI
+1 NAME Mary Smith
+0 US24_T05_I03 INDI
+1 NAME J Smith
+0 US24_T05_I04 INDI
+1 NAME M Smith
+0 US24_T05_F01 FAM
+1 MARR
+2 DATE 1 JAN 2010
+1 HUSB US24_T05_I01
+1 WIFE US24_T05_I02
+0 US24_T05_F02 FAM
+1 MARR
+2 DATE 1 JAN 2010
+1 HUSB US24_T05_I03
+1 WIFE US24_T05_I04
