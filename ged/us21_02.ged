@@ -1,0 +1,9 @@
+0 NOTE @author: Besnik Balaj
+0 NOTE Insert one family where the Wife is Male
+0 US21_T02_I01 INDI
+1 SEX M
+0 US21_T02_I02 INDI
+1 SEX M
+0 US21_T02_F01 FAM
+1 HUSB US21_T02_I01
+1 WIFE US21_T02_I02
