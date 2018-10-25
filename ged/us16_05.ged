@@ -1,0 +1,20 @@
+0 NOTE @author: Michael Ameer
+0 NOTE A family where the father does not have a last name and the kids do not have the same last name
+0 US16_T05_I01 INDI
+1 NAME 
+1 SEX M
+0 US16_T05_I02 INDI
+1 NAME Jack Hallow
+1 SEX M
+0 US16_T05_I03 INDI
+1 NAME Jane Smith
+1 SEX F
+0 US16_T05_I04 INDI
+1 NAME Jeff Smith
+1 SEX M
+0 US16_T05_F01 FAM
+1 MARR
+1 HUSB US16_T05_I01
+1 WIFE US16_T05_I03
+1 CHIL US16_T05_I02
+1 CHIL US16_T05_I04
