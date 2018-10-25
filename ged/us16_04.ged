@@ -1,0 +1,20 @@
+0 NOTE @author: Michael Ameer
+0 NOTE A family where two males in the same family do not have the same last name
+0 US16_T04_I01 INDI
+1 NAME John Smith
+1 SEX M
+0 US16_T04_I02 INDI
+1 NAME Jack Hallow
+1 SEX M
+0 US16_T04_I03 INDI
+1 NAME Jane Smith
+1 SEX F
+0 US16_T04_I04 INDI
+1 NAME Jeff Hallow
+1 SEX M
+0 US16_T04_F01 FAM
+1 MARR
+1 HUSB US16_T04_I01
+1 WIFE US16_T04_I03
+1 CHIL US16_T04_I02
+1 CHIL US16_T04_I04

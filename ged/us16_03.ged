@@ -1,0 +1,16 @@
+0 NOTE @author: Michael Ameer
+0 NOTE A family where one male in the family does not have a last name
+0 US16_T03_I01 INDI
+1 NAME John
+1 SEX M
+0 US16_T03_I02 INDI
+1 NAME Jack Hallow
+1 SEX M
+0 US16_T03_I03 INDI
+1 NAME Jane Smith
+1 SEX F
+0 US16_T03_F01 FAM
+1 MARR
+1 HUSB US16_T03_I01
+1 WIFE US16_T03_I03
+1 CHIL US16_T03_I02

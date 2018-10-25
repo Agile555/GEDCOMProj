@@ -1,0 +1,16 @@
+0 NOTE @author: Michael Ameer
+0 NOTE A family where two males in the same family have the same last name
+0 US16_T02_I01 INDI
+1 NAME John Smith
+1 SEX M
+0 US16_T02_I02 INDI
+1 NAME Jack Smith
+1 SEX M
+0 US16_T02_I03 INDI
+1 NAME Jane Smith
+1 SEX F
+0 US16_T02_F01 FAM
+1 MARR
+1 HUSB US16_T02_I01
+1 WIFE US16_T02_I03
+1 CHIL US16_T02_I02
