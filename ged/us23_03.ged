@@ -1,0 +1,14 @@
+0 NOTE @author: Michael Ameer
+0 NOTE Three unique individuals
+0 US23_T03_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 2000
+0 US23_T03_I02 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 1000
+0 US23_T03_I03 INDI
+1 NAME Jane Smith
+1 BIRT
+2 DATE 1 JAN 1000
