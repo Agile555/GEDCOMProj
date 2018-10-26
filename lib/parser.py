@@ -133,6 +133,7 @@ def adjust_entries(type, c): #after filling in direct related tags, fill seconda
     elif(type == 'FAM'): #TODO: Need to add a list of children into the cursor
         add_children_to_db(cursor[i[type]['ID']], c) #go grab the family id and populate the children in the database with it
         add_spouse_names(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']], c)
+        add_ages_to_children(cursor[i[type]['ID']], cursor[i[type]['Children']], c) #User Story 28
 
 def empty_cursor(num_slots): #sometimes global is a necessary evil
     """
@@ -199,6 +200,29 @@ def add_spouse_names(husb, wife, c):
     val = search_db('INDI', 'Name', 'ID', wife, c).fetchone()
     if(val):
         append(i['FAM']['Wife Name'], val[0])
+
+def add_ages_to_children(family_id, children, c):
+    """
+    Retrieve the list of children within each family using their IDs and append their name to the cursor.
+
+    Args:
+        family_id (string): id of family
+        children (list): original list of children without ages
+
+    Returns:
+        None
+    """
+    # final_children = dict()
+    val = search_db('FAM', 'Children', 'ID', family_id, c).fetchone()
+    print('here')
+    print(val)
+    if(val):
+        children = cursor[i['FAM']['Children']].split(',') #keep in mind, user IDs cannot have commas
+        for child in children:
+            age = search_db('INDI', 'Age', 'ID', child, c).fetchone()
+            child = child + ' (' + str(age) + ')'
+            #sort next
+            append(child, val[0]) #it's a cursor, need to subscript
 
 def exists(str):
     """
