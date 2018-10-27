@@ -24,7 +24,7 @@ def test_us15_02():
 #Family has more than 15 siblings
 def test_us15_03():
     execute_test('us15_03.ged',conn)
-    assert user_story_15.get_rows(conn) == [("US10_T03_F01")]
+    assert user_story_15.get_rows(conn) == [("US15_T03_F01")]
 
 #Family with no kids
 def test_us15_04():
@@ -34,4 +34,4 @@ def test_us15_04():
 #2 families where 1 fails and 1 passes
 def test_us15_05():
     execute_test('us15_05.ged',conn)
-    assert user_story_15.get_rows(conn) == [("US10_T05_F01")]
+    assert user_story_15.get_rows(conn) == [("US15_T05_F01")]
