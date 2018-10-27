@@ -224,7 +224,7 @@ def add_ages_to_children(c):
                 unknowns.append(('NA', child))
     
     out = []
-    for child in sorted(knowns) + unknowns:
+    for child in list(reversed(sorted(knowns))) + unknowns:
         out.append('{} ({})'.format(child[1], child[0]))
 
     cursor[i['FAM']['Children']] = ', '.join(out) #finally, overwrite with ages added

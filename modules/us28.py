@@ -1,7 +1,7 @@
 """
 User Story 28 lists siblings in families by decreasing age
 
-@author: Kipsy Quevada
+@author: Kipsy Quevada, Mark Freeman
 """
 
 from lib.user_story import UserStory
