@@ -1,0 +1,7 @@
+0 NOTE @author: Kipsy Quevada
+0 NOTE Insert one child
+0 US28_T02_I01 INDI
+1 BIRT
+2 DATE 1 JAN 1990
+0 US28_T02_F01 FAM
+1 CHIL US28_T02_I01
