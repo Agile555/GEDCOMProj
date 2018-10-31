@@ -1,17 +1,16 @@
 [![Build Status](https://travis-ci.com/Agile555/GEDCOMProj.svg?branch=master)](https://travis-ci.com/Agile555/GEDCOMProj)
 
-# :tada::tada::tada: Welcome to GEDCOM Banana :banana: :tada::tada::tada: 
+# :tada::tada::tada: Welcome to GEDCOM Cherry :cherries: :tada::tada::tada: 
 
-## New Things In Version 1.0.1:
+## New Things In Version 1.0.2:
 
-This sprint, we implemented another __11__ user stories, putting us up to a total of 24!  This means we're keeping ahead of schedule in feature implementation.  Be on the lookout for more updates in the future!
+This sprint, we implemented another __6__ user stories, putting us up to a total of 30!  We are beginning progress back toward the initial schedule, with time left for a refactoring sprint following Cherry.
 
 New features include:
 
-* Recognition of common marriage practices
-* Checking of individual ages within the database to assure proper maintenance of death records
-* Inclusion and testing of individual age generation based off of varying amounts of provided data
-* Detection of anomaly behavior in regards to families, such as large amount of siblings born at once.
+* Detection of strange family sizes
+* Integration of child ages and orderings within families
+* Checking for common gender practices in families
 
 Future releases will be packed with even more features, so stay tuned!  If you've taken our code for a spin, you can also let us know how we did via our GitHub handles! :nerd_face:
 
