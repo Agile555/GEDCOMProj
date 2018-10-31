@@ -1,0 +1,16 @@
+0 NOTE @author: Besnik Balaj
+0 NOTE Insert one family where husband is wrong and a family where wife is wrong
+0 US21_T05_I01 INDI
+1 SEX F
+0 US21_T05_I02 INDI
+1 SEX F
+0 US21_T05_F01 FAM
+1 HUSB US21_T05_I01
+1 WIFE US21_T05_I02
+0 US21_T05_I03 INDI
+1 SEX M
+0 US21_T05_I04 INDI
+1 SEX M
+0 US21_T05_F02 FAM
+1 HUSB US21_T05_I03
+1 WIFE US21_T05_I04

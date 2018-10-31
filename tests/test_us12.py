@@ -15,7 +15,7 @@ def test_us12_01():
     execute_test('us12_01.ged', conn)
     assert user_story_12.get_rows(conn) == [('US12_T01_I02', 'US12_T01_I03'), ('US12_T01_I01', 'US12_T01_I04'), ('US12_T01_I02', 'US12_T01_I04')]
 
-def test_us12_12():
+def test_us12_02():
     execute_test('us12_02.ged', conn)
     assert user_story_12.get_rows(conn) == []
 

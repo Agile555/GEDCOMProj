@@ -133,6 +133,7 @@ def adjust_entries(type, c): #after filling in direct related tags, fill seconda
     elif(type == 'FAM'): #TODO: Need to add a list of children into the cursor
         add_children_to_db(cursor[i[type]['ID']], c) #go grab the family id and populate the children in the database with it
         add_spouse_names(cursor[i[type]['Husband ID']], cursor[i[type]['Wife ID']], c)
+        add_ages_to_children(c) #User Story 28
 
 def empty_cursor(num_slots): #sometimes global is a necessary evil
     """
@@ -200,6 +201,34 @@ def add_spouse_names(husb, wife, c):
     if(val):
         append(i['FAM']['Wife Name'], val[0])
 
+def add_ages_to_children(c):
+    """
+    For every child already in the cursor, append their age.  Then, sort by age.
+
+    Args:
+        c (cursor): cursor object connecting us to SQL database
+
+    Returns:
+        None
+    """
+    unknowns = []
+    knowns = []
+
+    child_css = cursor[i['FAM']['Children']] #TODO: rename cursor (conflict of name with SQL cursor c)
+    if(exists(child_css)):
+        for child in child_css.split(','):
+            age = search_db('INDI', 'Age', 'ID', child, c).fetchone()
+            if(age and exists(age)): #kid was in the database and age was not NA
+                knowns.append((age[0], child)) #we're gonna sort the tuple on the first element
+            else:
+                unknowns.append(('NA', child))
+    
+    out = []
+    for child in list(reversed(sorted(knowns))) + unknowns:
+        out.append('{} ({})'.format(child[1], child[0]))
+
+    cursor[i['FAM']['Children']] = ', '.join(out) #finally, overwrite with ages added
+    
 def exists(str):
     """
     Checks to see whether the value is populated in the cursor

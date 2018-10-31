@@ -1,0 +1,10 @@
+0 NOTE @author: Michael Ameer
+0 NOTE Two individuals have the same name but different birthdays
+0 US23_T02_I01 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 2000
+0 US23_T02_I02 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 1000

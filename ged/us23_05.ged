@@ -1,0 +1,12 @@
+0 NOTE @author: Michael Ameer
+0 NOTE Three people, two have the same birthday but no name
+0 US23_T05_I01 INDI
+1 BIRT
+2 DATE 1 JAN 1000
+0 US23_T05_I02 INDI
+1 NAME John Smith
+1 BIRT
+2 DATE 1 JAN 1000
+0 US23_T05_I03 INDI
+1 BIRT
+2 DATE 1 JAN 1000

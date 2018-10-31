@@ -1,0 +1,9 @@
+0 NOTE @author: Besnik Balaj
+0 NOTE Insert one family where the couples are correct gender
+0 US21_T04_I01 INDI
+1 SEX F
+0 US21_T04_I02 INDI
+1 SEX M
+0 US21_T04_F01 FAM
+1 HUSB US21_T04_I01
+1 WIFE US21_T04_I02
