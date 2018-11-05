@@ -19,7 +19,7 @@ def test_us38_01():
 #one user whose birthday is coming up at the time of writing this
 def test_us38_02():
     execute_test('us38_02.ged', conn)
-    assert user_story_38.get_rows(conn) == [('US38_T02_I01', '2000-11-05')]
+    assert user_story_38.get_rows(conn) == [('US38_T02_I01', '2000-12-03')]
 
 #one user whose birthday is farther out at the time of writing this
 def test_us38_03():
@@ -33,4 +33,4 @@ def test_us38_04():
 
 def test_us38_05():
     execute_test('us38_05.ged', conn)
-    assert user_story_38.get_rows(conn) == [('US38_T05_I01', '2000-11-01')]
+    assert user_story_38.get_rows(conn) == [('US38_T05_I01', '2000-12-05')]
