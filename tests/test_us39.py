@@ -14,7 +14,7 @@ user_story_39 = UserStory39()
 #one family who has an upcoming anniversary at the time of this writing
 def test_us39_01():
     execute_test('us39_01.ged', conn)
-    assert user_story_39.get_rows(conn) == [('US39_T01_F01', '2000-11-05')]
+    assert user_story_39.get_rows(conn) == [('US39_T01_F01', '2000-12-05')]
 
 #one family whos anniversary is farther away
 def test_us39_02():
