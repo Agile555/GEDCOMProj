@@ -15,11 +15,11 @@ class UserStory34(UserStory):
         else:
             for row in rows:
                 if int(row[1]) >= (2*int(row[3])):
-                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Husband was more than twice the age as Husband. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
+                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Husband was more than twice the age as Husband. Husband was {} while Wife was {}.'.format(row[0], row[2], row[1], row[3]))
                 elif int(row[3]) >= (2*int(row[1])):
-                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Wife was more than twice the age as Husband. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
+                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married where Wife was more than twice the age as Husband. Husband was {} while Wife was {}.'.format(row[0], row[2], row[1], row[3]))
                 else:
-                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married at reasonable age differences. Husband was {} while Wife was {}'.format(row[0], row[2], row[1], row[2]))
+                    print('REPORT: FAMILY: US34: Husband {} and Wife {} married at reasonable age differences. Husband was {} while Wife was {}.'.format(row[0], row[2], row[1], row[3]))
 
     def get_rows(self, conn):
         c = conn.cursor()
@@ -29,11 +29,10 @@ class UserStory34(UserStory):
         #grab records of spouses
         Husb = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Husband ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA" AND FAM."Husband ID" != "NA"  AND FAM."Wife ID" != "NA"').fetchall()
         Wife = c.execute('SELECT INDI.ID, Birthday, Married FROM FAM INNER JOIN INDI ON (FAM."Wife ID" = INDI.ID) WHERE Birthday != "NA" AND Married != "NA" AND FAM."Husband ID" != "NA"  AND FAM."Wife ID" != "NA"').fetchall()
-        if len(Husb) == len(Wife):
-            for i in range(len(Husb)):
-                Spouses.append(Husb[i] + Wife[i])
-            for fam in Spouses:
-                HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
-                WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
-                Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
+        for i in range(len(Husb)):
+            Spouses.append(Husb[i] + Wife[i])
+        for fam in Spouses:
+            HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
+            WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
+            Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
         return Spouse_Info
