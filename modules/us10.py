@@ -13,13 +13,12 @@ class UserStory10(UserStory):
             print('REPORT: FAMILY: US10: Family exists but did not contain a Husband or Wife or neither')
         else:
             for row in rows:
-                print(row)
                 if int(row[1]) <= 14 and int(row[3]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before either were at least 14 years of age. Husband was {} and the Wife was {}.'.format(row[0], row[2], row[1], row[3]))
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} before either were at least 14 years of age. Husband was {} and the Wife was {}.'.format(row[0], row[2], row[1], row[3]))
                 elif int(row[1]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Husband was at least 14 years of age. Husband was {}.'.format(row[0], row[2], row[1]))
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} before Husband was at least 14 years of age. Husband was {}.'.format(row[0], row[2], row[1]))
                 elif int(row[3]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} married before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[3]))
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[3]))
                 else:
                     pass
 
@@ -39,4 +38,5 @@ class UserStory10(UserStory):
                 HusbAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[1],"%Y-%m-%d")) // timedelta(days=365.2425))
                 WifeAge = str((datetime.strptime(fam[2],"%Y-%m-%d") - datetime.strptime(fam[4],"%Y-%m-%d")) // timedelta(days=365.2425))
                 Spouse_Info.append((fam[0],HusbAge,fam[3],WifeAge))
+
         return Spouse_Info
