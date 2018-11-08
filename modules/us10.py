@@ -18,7 +18,7 @@ class UserStory10(UserStory):
                 elif int(row[1]) <= 14:
                     print('REPORT: FAMILY: US10: Husband {} married his Wife {} before Husband was at least 14 years of age. Husband was {}.'.format(row[0], row[2], row[1]))
                 elif int(row[3]) <= 14:
-                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} before Wife was at least 14 years of age. Wife was {}'.format(row[0], row[2], row[3]))
+                    print('REPORT: FAMILY: US10: Husband {} married his Wife {} before Wife was at least 14 years of age. Wife was {}.'.format(row[0], row[2], row[3]))
                 else:
                     pass
 
