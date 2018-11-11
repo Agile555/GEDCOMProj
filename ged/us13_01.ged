@@ -1,0 +1,11 @@
+0 NOTE @author: Mark Freeman
+0 NOTE Insert a family with two children born on the same day
+0 INDI US13_T01_I01
+1 BIRT
+2 DATE 1 JAN 1990
+0 INDI US13_T01_I02
+1 BIRT
+2 DATE 1 JAN 1990
+0 FAM US13_T01_F01
+1 CHIL US13_T01_I01
+1 CHIL US13_T01_I02
