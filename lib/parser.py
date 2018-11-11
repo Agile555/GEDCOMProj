@@ -324,8 +324,11 @@ def process(line, c): #goal is to make sure that it is at its own valid level AN
                 if(len(args) == 2): #they only gave us month and year
                     args = ['1'] + args
                 if(len(args) == 1): #they only gave us a year
-                    args = ['1', 'JAN'] + args 
-                append(i[stack[0]][d[parent]['parallel']], datetime.datetime.strptime(" ".join(args), '%d %b %Y').date())
+                    args = ['1', 'JAN'] + args
+                try:
+                    append(i[stack[0]][d[parent]['parallel']], datetime.datetime.strptime(" ".join(args), '%d %b %Y').date())
+                except ValueError:
+                    pass #no op, just reject the date
 
 def parse(file, conn): #formerly main
     """
