@@ -13,7 +13,7 @@ user_story_07 = UserStory07()
 
 def test_us07_01():
     execute_test('us07_01.ged', conn)
-    assert user_story_07.get_rows(conn) == [('US07_T01_I01', 'NA', '218')]
+    assert user_story_07.get_rows(conn) == [('US07_T01_I01', 'NA', '219')]
 
 def test_us07_02():
     execute_test('us07_02.ged', conn)
@@ -25,4 +25,4 @@ def test_us07_03():
 
 def test_us07_04():
     execute_test('us07_04.ged', conn)
-    assert user_story_07.get_rows(conn) == [('US07_T04_I01', 'NA','218'),('US07_T04_I02', 'NA','198')]
+    assert user_story_07.get_rows(conn) == [('US07_T04_I01', 'NA','219'),('US07_T04_I02', 'NA','198')]
