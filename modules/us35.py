@@ -17,10 +17,8 @@ class UserStory35(UserStory):
     def get_rows(self, conn):
         c = conn.cursor()
         res = []
-        
         rows = c.execute('SELECT ID, Birthday, Age FROM INDI WHERE (Birthday != "NA" AND Age != "NA")').fetchall()
         for row in rows:
-            if(int(row[2]) == 0):
-                if(is_upcoming(datetime.strptime(row[1], '%Y-%m-%d'), datetime.today(), 30, 'days')):
-                    res.append(row)
+            if(int(row[2]) == 0 and is_upcoming(datetime.strptime(row[1], '%Y-%m-%d'), datetime.today(), 30, 'days')):
+                res.append(row)
         return res
