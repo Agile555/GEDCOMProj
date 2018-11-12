@@ -17,16 +17,14 @@ class UserStory36(UserStory):
     def get_rows(self, conn):
         c = conn.cursor()
         res = []
-        
         rows = c.execute('SELECT ID, Death FROM INDI WHERE Death != "NA"').fetchall()
         for row in rows:
             today = datetime.today()
             deat =  datetime.strptime(row[1], '%Y-%m-%d')
             difference = today - deat
             years = difference // timedelta(days=365.25)
-            if (years <= 1):
-                if(is_upcoming(datetime.strptime(row[1], '%Y-%m-%d'), datetime.today(), 30, 'days')) == True:
-                    res.append(row)     
+            if (years <= 1 and is_upcoming(datetime.strptime(row[1], '%Y-%m-%d'), datetime.today(), 30, 'days')):
+                res.append(row)     
         return res
 
 
