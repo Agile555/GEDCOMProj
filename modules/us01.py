@@ -11,13 +11,11 @@ class UserStory01(UserStory):
     
     def print_rows(self, rows):
         for row in rows:
-            print ("ERROR: INDIVIDUAL: US01: Individual {} with date {} occurs in the future".format(row[0], row[1]))
+            print ("ERROR: INDIVIDUAL: US01: Individual {} with date {} occurs after the current date".format(row[0], row[1]))
     
     def get_rows(self, conn):
         c = conn.cursor()
         res = []
-
-        #grab all records where date occurs after current date
         rows = c.execute("select ID, Birthday from INDI where Birthday > date('now') AND Birthday != 'NA'").fetchall()
         rows += c.execute("select ID, Married from FAM where Married > date('now') AND Married != 'NA'").fetchall()
         rows += c.execute("select ID, Divorced from FAM where Divorced > date('now') AND Divorced != 'NA'").fetchall()
