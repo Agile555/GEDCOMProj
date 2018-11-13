@@ -4,7 +4,7 @@ Entry point for GEDCOM parsing application.
 @author: Mark Freeman, Michael Ameer, Besnik Balaj, Kipsy Quevada
 """
 
-from modules import us01, us02, us03, us04, us05, us06, us07, us08, us09, us10, us12, us13, us15, us16, us18, us21, us23, us24, us27, us28, us29, us30, us31, us32, us33, us34, us35, us36, us38, us39, us41
+from modules import us01, us02, us03, us04, us05, us06, us07, us08, us09, us10, us12, us13, us15, us16, us18, us21, us23, us24, us27, us28, us29, us30, us31, us32, us33, us34, us35, us36, us38, us39, us41, us42
 from lib.utilities import reset_db, execute_test
 import sqlite3
 
@@ -49,6 +49,7 @@ def main():
     stories.append(us38.UserStory38())
     stories.append(us39.UserStory39())
     stories.append(us41.UserStory41())
+    stories.append(us42.UserStory42())
 
     for story in stories:
         story.fire(conn)
