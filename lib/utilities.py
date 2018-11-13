@@ -59,6 +59,23 @@ def fill_megatron(test_name):
     conn = sqlite3.connect('megatron.db')
     execute_test(test_name, conn)
 
+def nearby(a, b, length, unit='days'):
+    """
+    Determines if two dates are nearby each other, within a range irrespective of which comes first
+
+    Args:
+        a (datetime): first date
+        b (datetime): second date
+        length (int): number of units we are checking within
+        unit (string): a string representing the unit of time (days || weeks || months || years)
+
+    Returns:
+        (bool): the dates are close to each other
+    """
+    if(a > b):
+        a, b = b, a #we assume that a comes before b
+    return a + timedelta(days = length * time_units[unit]) >= b #if it overshoots the later date, they are nearby
+
 def is_in_range(d, d_start, length, unit='days'):
     """
     Determine if a date falls within a given range after a certain date.

@@ -17,7 +17,7 @@ def test_us36_01():
 
 def test_us36_02():
     execute_test('us36_02.ged', conn)
-    assert user_story_36.get_rows(conn) == [('US36_T02_I01', '2018-10-01')]
+    assert user_story_36.get_rows(conn) == [('US36_T02_I01', '2018-11-01')]
 
 def test_us36_03():
     execute_test('us36_03.ged', conn)
