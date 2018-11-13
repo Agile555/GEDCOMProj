@@ -1,18 +1,17 @@
 [![Build Status](https://travis-ci.com/Agile555/GEDCOMProj.svg?branch=master)](https://travis-ci.com/Agile555/GEDCOMProj)
 
-# :tada::tada::tada: Welcome to GEDCOM Cherry :cherries: :tada::tada::tada: 
+# :tada::tada::tada: Welcome to GEDCOM Dragonfruit :dragon: :tada::tada::tada: 
 
-## New Things In Version 1.0.2:
+## New Things In Version 1.0.3:
 
-This sprint, we implemented another __6__ user stories, putting us up to a total of 30!  We are beginning progress back toward the initial schedule, with time left for a refactoring sprint following Cherry.
+This sprint, we implemented another __2__ user stories, putting us up to a total of 32!  You may be wondering why our user story output for this round is so low.  That is because this was actually a _hardening sprint_ for us -- yay for better code!
 
 New features include:
 
-* Detection of strange family sizes
-* Integration of child ages and orderings within families
-* Checking for common gender practices in families
+* Handling of invalid dates
+* Fresh, never frozen codebase
 
-Future releases will be packed with even more features, so stay tuned!  If you've taken our code for a spin, you can also let us know how we did via our GitHub handles! :nerd_face:
+Sad news: this is actually the end of our GEDCOM journey. :cry: We all had a great time working together and hope to do something similar again.  As always, if you like our code, feel free to reach out to us at our GitHub handles! We're always working on something new :nerd_face:
 
 # Get Ready for the Experience of a Lifetime
 
